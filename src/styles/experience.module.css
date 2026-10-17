@@ -1,0 +1,330 @@
+/* ── Experience: muted pink with black type ── */
+.section {
+  --exp-bg: #ecccda;
+  --exp-ink: #121014;
+  --exp-soft: #4a3c45;
+  --exp-line: rgba(18, 16, 20, 0.18);
+  --exp-card: rgba(255, 255, 255, 0.32);
+  --lane: 240px; /* centre column the figure walks down */
+  --walker-w: 170px;
+  --walker-h: 290px;
+
+  position: relative;
+  background: var(--exp-bg);
+  color: var(--exp-ink);
+  padding: clamp(96px, 12vw, 160px) 0 clamp(110px, 14vw, 180px);
+  overflow: hidden;
+}
+
+.inner {
+  position: relative;
+}
+
+/* ── header ── */
+.head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+  margin-bottom: clamp(56px, 8vw, 104px);
+}
+
+.eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--exp-ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.eyebrow::before,
+.eyebrow::after {
+  content: "";
+  width: 28px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.6;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(40px, 7vw, 100px);
+  color: var(--exp-ink);
+}
+
+/* ── timeline ── */
+.timeline {
+  position: relative;
+  padding: 20px 0 40px;
+}
+
+.line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--exp-line);
+}
+
+.lineFill {
+  width: 100%;
+  background: var(--exp-ink);
+  border-radius: 2px;
+}
+
+/* the figure: centred on the line, moved down it by JS */
+.walker {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 3;
+  width: var(--walker-w);
+  height: var(--walker-h);
+  margin-left: calc(var(--walker-w) / -2);
+  pointer-events: none;
+  will-change: transform;
+}
+
+.walker canvas {
+  position: relative;
+  z-index: 1;
+}
+
+.walkerShadow {
+  position: absolute;
+  left: 50%;
+  bottom: 4%;
+  width: 46%;
+  height: 7%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(18, 16, 20, 0.28), transparent);
+}
+
+.fallback {
+  position: absolute;
+  inset: 8% 25%;
+  width: 50%;
+  height: 84%;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(90px, 14vh, 160px);
+}
+
+/* each row: [card] [lane] [card] */
+.item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr var(--lane) 1fr;
+  min-height: 220px;
+}
+
+.item[data-side="left"] .card {
+  grid-column: 1;
+}
+
+.item[data-side="right"] .card {
+  grid-column: 3;
+}
+
+/* the dot on the line (top offset must match NODE_OFFSET in ExperienceSection.tsx) */
+.node {
+  position: absolute;
+  left: 50%;
+  top: 56px;
+  width: 18px;
+  height: 18px;
+  margin: -9px 0 0 -9px;
+  border-radius: 50%;
+  background: var(--exp-bg);
+  border: 2px solid var(--exp-ink);
+  z-index: 1;
+  transition: background 0.4s var(--ease), transform 0.4s var(--ease);
+}
+
+.item[data-active] .node {
+  background: var(--exp-ink);
+  transform: scale(1.25);
+}
+
+/* connector from the dot to the card */
+.node::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: calc(var(--lane) / 2 - 12px);
+  height: 1px;
+  background: var(--exp-ink);
+  opacity: 0.25;
+  transition: opacity 0.4s var(--ease);
+}
+
+.item[data-side="left"] .node::after {
+  right: 100%;
+}
+
+.item[data-side="right"] .node::after {
+  left: 100%;
+}
+
+.item[data-active] .node::after {
+  opacity: 0.8;
+}
+
+/* ── cards ── */
+.card {
+  position: relative;
+  align-self: start;
+  padding: clamp(22px, 2.6vw, 34px);
+  border-radius: 18px;
+  background: var(--exp-card);
+  border: 1px solid rgba(18, 16, 20, 0.12);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+  transition: border-color 0.45s var(--ease), background 0.45s var(--ease), box-shadow 0.45s var(--ease);
+}
+
+.item[data-side="left"] .card {
+  text-align: right;
+}
+
+.item[data-active] .card {
+  background: rgba(255, 255, 255, 0.55);
+  border-color: var(--exp-ink);
+  box-shadow: 0 24px 50px -28px rgba(18, 16, 20, 0.45);
+}
+
+.cardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.item[data-side="left"] .cardTop {
+  flex-direction: row-reverse;
+}
+
+.num {
+  font-family: var(--font-display);
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 0.1em;
+}
+
+.period {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--exp-soft);
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: clamp(24px, 2.6vw, 38px);
+  line-height: 1;
+  color: var(--exp-ink);
+}
+
+.org {
+  margin: 10px 0 0;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(19px, 1.7vw, 24px);
+  color: var(--exp-ink);
+}
+
+.desc {
+  margin: 14px 0 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--exp-soft);
+}
+
+/* not-yet-written details look faded so they're easy to spot */
+.card[data-placeholder] .period,
+.card[data-placeholder] .desc {
+  opacity: 0.55;
+  font-style: italic;
+}
+
+.tags {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.item[data-side="left"] .tags {
+  justify-content: flex-end;
+}
+
+.tags li {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(18, 16, 20, 0.3);
+}
+
+/* ── tablets: narrower lane ── */
+@media (max-width: 1024px) {
+  .section {
+    --lane: 180px;
+    --walker-w: 130px;
+    --walker-h: 220px;
+  }
+}
+
+/* ── phones: line on the left, all cards on the right ── */
+@media (max-width: 760px) {
+  .section {
+    --lane: 76px;
+    --walker-w: 84px;
+    --walker-h: 142px;
+  }
+  .line,
+  .walker,
+  .node {
+    left: calc(var(--lane) / 2);
+  }
+  .item {
+    grid-template-columns: var(--lane) 1fr;
+    min-height: 0;
+  }
+  .item[data-side="left"] .card,
+  .item[data-side="right"] .card {
+    grid-column: 2;
+    text-align: left;
+  }
+  .item[data-side="left"] .cardTop {
+    flex-direction: row;
+  }
+  .item[data-side="left"] .tags {
+    justify-content: flex-start;
+  }
+  .item[data-side="left"] .node::after,
+  .item[data-side="right"] .node::after {
+    left: 100%;
+    right: auto;
+    width: 14px;
+  }
+  .list {
+    gap: 56px;
+  }
+}

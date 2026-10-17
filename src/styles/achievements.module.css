@@ -1,0 +1,260 @@
+.section {
+  position: relative;
+  background: #f2d9e0;
+  color: #000;
+}
+
+/* Tall corridor: one full screen + one "step" per page turn.
+   The JS reads the real heights, so units here can change freely. */
+.scrollCorridor {
+  position: relative;
+  height: calc(100svh + (var(--states) - 1) * var(--step));
+}
+
+/* Full-screen stage that stays pinned while the pages turn.
+   The book gets the whole height below the navbar; the title and the
+   page counter sit in the free space beside it. */
+.stickyViewport {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: calc(var(--nav-h) + 8px) clamp(8px, 1.5vw, 24px) 10px;
+}
+
+/* horizontal title above the book, same type as the other sections */
+.head {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+  text-align: center;
+  pointer-events: none;
+}
+
+/* .section-title / .display supply font, weight, stretch and case; capped so the book keeps its room */
+.head .title {
+  margin: 0;
+  margin-top: 14px;
+  color: #000;
+  font-size: min(clamp(28px, 3.6vw, 60px), 7svh);
+}
+
+.subtitle {
+  margin: 0;
+  font-size: clamp(16px, 1.4vw, 22px);
+  color: #a0334f;
+}
+
+/* ── the book fills all the remaining space ── */
+.bookArea {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  container-type: size;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bookWrap {
+  /* two pages side by side: full height of the screen (or full width, whichever runs out first) */
+  width: min(100cqw - 2 * clamp(24px, 3vw, 56px), 100cqh * var(--aspect, 0.75) * 2);
+  aspect-ratio: calc(var(--aspect, 0.75) * 2);
+  position: relative;
+  transition: transform 1.1s var(--ease);
+  border-radius: 6px;
+}
+
+/* cheap soft shadow under the book (a CSS filter here made page turns stutter) */
+.bookWrap::after {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: -18px;
+  height: 36px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(80, 20, 40, 0.38), transparent);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* phones: one page, as big as fits */
+.bookWrap[data-narrow] {
+  width: min(100cqw, 100cqh * var(--aspect, 0.75));
+  aspect-ratio: var(--aspect, 0.75);
+}
+
+/* closed book: centre the visible half */
+.bookWrap[data-shift="cover"] {
+  transform: translateX(-25%);
+}
+.bookWrap[data-shift="back"] {
+  transform: translateX(25%);
+}
+.bookWrap[data-mirrored][data-shift="cover"] {
+  transform: translateX(25%);
+}
+.bookWrap[data-mirrored][data-shift="back"] {
+  transform: translateX(-25%);
+}
+
+.bookWrap:focus-visible {
+  outline-offset: 8px;
+}
+
+/* Left-to-right turning: mirror the whole book, then un-mirror each page's artwork */
+.mirror {
+  width: 100%;
+  height: 100%;
+}
+.bookWrap[data-mirrored] .mirror {
+  transform: scaleX(-1);
+}
+.bookWrap[data-mirrored] .page img {
+  transform: scaleX(-1);
+}
+
+.book {
+  margin: 0 auto;
+  height: 100%;
+}
+
+.bookLoading {
+  width: 100%;
+  aspect-ratio: calc(var(--aspect, 0.75) * 2);
+}
+
+.bookWrap[data-narrow] .bookLoading {
+  aspect-ratio: var(--aspect, 0.75);
+}
+
+.page {
+  position: relative;
+  background: #f4eef6;
+  overflow: hidden;
+}
+
+/* PNG fills the page exactly; nothing is cropped when the page shape matches the image */
+.page img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+/* subtle curvature shading toward the spine */
+.gutterShade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.gutterShade[data-side="right"] {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.14), rgba(0, 0, 0, 0) 8%);
+}
+.gutterShade[data-side="left"] {
+  background: linear-gradient(270deg, rgba(0, 0, 0, 0.14), rgba(0, 0, 0, 0) 8%);
+}
+.bookWrap[data-narrow] .gutterShade {
+  display: none;
+}
+
+/* ── counter + hint (desktop: bottom-right corner, outside the book) ── */
+.footerRow {
+  position: absolute;
+  right: clamp(12px, 1.8vw, 32px);
+  bottom: 14px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.counter {
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  color: #6b4a57;
+  font-variant-numeric: tabular-nums;
+}
+
+.counter strong {
+  color: #000;
+  font-weight: 700;
+}
+
+.scrollHint {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #a0334f;
+  transition: opacity 0.4s var(--ease);
+}
+
+.scrollHint[data-hidden] {
+  opacity: 0;
+}
+
+.scrollHint svg {
+  animation: nudge 1.6s ease-in-out infinite;
+}
+
+@keyframes nudge {
+  50% {
+    transform: translateY(3px);
+  }
+}
+
+.pdf {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #a0334f;
+  border-bottom: 1px solid rgba(160, 51, 79, 0.45);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bookWrap {
+    transition: none;
+  }
+  .scrollHint svg {
+    animation: none;
+  }
+}
+
+/* ── phones & small tablets: stack title / book / counter, book as wide as the screen ── */
+@media (max-width: 760px) {
+  .stickyViewport {
+    gap: 8px;
+    padding: calc(var(--nav-h) + 6px) 8px 10px;
+  }
+  .head {
+    gap: 2px;
+  }
+  .head .title {
+    font-size: clamp(20px, 6.2vw, 30px);
+  }
+  .footerRow {
+    position: static;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+  }
+  .bookWrap[data-narrow] {
+    width: min(100cqw, 100cqh * var(--aspect, 0.75));
+  }
+}
