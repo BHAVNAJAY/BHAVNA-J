@@ -1,15 +1,13 @@
 /**
  * PROJECTS
  * ─────────
- * Only the title, category and one-line summary were supplied, so every
- * other field is left empty on purpose — empty fields are simply hidden.
- *
  * To add a cover image: put it in /public/projects/ and set
- *   thumbnail: "/projects/gramseva.jpg"
+ *   thumbnail: "/projects/satquery.jpg"
  * (16:10 landscape works best, ~1600×1000). Without one, a typographic
  * cover is generated from `title`, `category` and `hue`.
  *
- * Never put a link here unless it is real — `demoUrl` / `repoUrl` are optional.
+ * `externalUrl` makes the whole card open that link directly — no case
+ * study page in between.
  */
 
 export type Project = {
@@ -24,79 +22,100 @@ export type Project = {
   stack?: string[];
   demoUrl?: string;
   repoUrl?: string;
-  /** If set, clicking the card opens this URL instead of the case-study view. */
+  /** Clicking the card opens this URL. */
   externalUrl?: string;
-  caseStudy?: {
-    problem?: string;
-    solution?: string;
-    contribution?: string;
-    process?: string;
-    results?: string;
-    screenshots?: { src: string; alt: string }[];
-  };
 };
 
 export const projects: Project[] = [
   {
-    slug: "gramseva",
-    title: "GramSeva",
-    category: "AI · Geospatial",
-    summary: "AI-assisted land-record discovery and geospatial analysis.",
-    hue: 152,
+    slug: "satquery-ai",
+    title: "SatQuery AI",
+    category: "AI-Powered Earth Observation",
+    summary:
+      "A Vision-Language system for an ISRO problem statement that integrates Gemini API, Meta SAM 2, and fine-tuned AI models to analyze multi-sensor satellite imagery and support remote-sensing queries.",
+    hue: 200,
+    thumbnail: "/projects/project-01.png",
+    role: "Generative AI Satellite Query & Analysis Platform",
+    stack: ["Python", "PyTorch", "LLMs", "Agentic AI", "RAG", "Embeddings", "Computer Vision", "REST APIs", "EfficientNet-B4", "ResNet-50"],
+    repoUrl: "https://github.com/BHAVNAJAY/SatQueryAI",
+    externalUrl: "https://github.com/BHAVNAJAY/SatQueryAI",
   },
   {
-    slug: "kriya-hub",
-    title: "Kriya Hub",
-    category: "SaaS · Marketing Design",
-    summary: "HR management SaaS and marketing design.",
+    slug: "ping",
+    title: "Ping",
+    category: "Intelligent Campaign Automation",
+    summary:
+      "A full-stack CRM that transforms natural-language business goals into AI-generated customer audiences, personalized campaign messages, and recommended send times.",
     hue: 328,
+    role: "AI-Powered CRM for Smarter Customer Engagement",
+    stack: ["React", "Node.js", "Express.js", "MongoDB", "OpenAI API"],
+    demoUrl: "https://ping-ecru-nu.vercel.app/",
+    externalUrl: "https://ping-ecru-nu.vercel.app/",
   },
   {
-    slug: "candidate-assessment-portal",
-    title: "Candidate Assessment Portal",
-    category: "Web App · HR",
-    summary: "HR candidate and assessment management.",
+    slug: "iready",
+    title: "iReady",
+    category: "AI-Powered Interview Preparation",
+    summary:
+      "An NLP-powered interview practice platform that analyzes interview responses using TF-IDF similarity, grammar correction, and keyword matching to provide structured feedback.",
     hue: 262,
+    role: "AI Interview Practice Platform",
+    stack: ["React", "Flask", "Python", "Scikit-learn", "TextBlob", "NLTK", "ReportLab"],
+    demoUrl: "https://i-ready-alpha.vercel.app/",
+    externalUrl: "https://i-ready-alpha.vercel.app/",
+  },
+  {
+    slug: "netra",
+    title: "Netra",
+    category: "Intelligent Healthcare Operations",
+    summary:
+      "An AI-powered hospital platform that predicts patient length of stay, ward requirements, and overflow probability to support smarter triage and resource planning.",
+    hue: 14,
+    role: "AI-Powered Patient Flow & Hospital Operations Platform",
+    stack: ["Python", "FastAPI", "Scikit-learn", "Pandas", "NumPy", "Next.js", "Supabase"],
+    repoUrl: "https://github.com/BHAVNAJAY/Netra",
+    externalUrl: "https://github.com/BHAVNAJAY/Netra",
+  },
+  {
+    slug: "structify",
+    title: "Structify",
+    category: "Graph Analysis & Validation",
+    summary:
+      "A Node.js-based graph analysis tool that parses node strings, detects hierarchical tree structures, identifies cycles, and analyzes graph relationships using graph algorithms.",
+    hue: 36,
+    role: "BFHL Node Hierarchy Analyzer",
+    stack: ["React", "Node.js", "REST APIs", "Graph Algorithms", "JavaScript"],
+    demoUrl: "https://structifybybhavna.netlify.app/",
+    externalUrl: "https://structifybybhavna.netlify.app/",
+  },
+  {
+    slug: "notify",
+    title: "Notify",
+    category: "Secure Notes & Organization",
+    summary:
+      "A full-stack notes application featuring Google OAuth authentication, search, pagination, and a responsive user interface for managing notes efficiently.",
+    hue: 210,
+    role: "Full-Stack Notes Application",
+    stack: ["React", "Node.js", "Express.js", "MongoDB", "Google OAuth"],
+    demoUrl: "https://notify-yh0m.onrender.com/",
+    externalUrl: "https://notify-yh0m.onrender.com/",
   },
   {
     slug: "ecolearn",
     title: "EcoLearn",
-    category: "EdTech · Gamification",
-    summary: "A gamified educational platform.",
+    category: "Gamified Sustainability Education",
+    summary:
+      "A gamified learning platform that promotes awareness of the UN Sustainable Development Goals through interactive lessons, quizzes, and sustainability challenges, encouraging students to connect learning with real-world action.",
     hue: 96,
-  },
-  {
-    slug: "disastermesh-resqueue",
-    title: "DisasterMesh / ResQueue",
-    category: "IoT · Emergency Response",
-    summary: "Offline IoT disaster response and emergency logistics.",
-    hue: 14,
-  },
-  {
-    slug: "therapet",
-    title: "THERAPET",
-    category: "UI/UX Design",
-    summary: "A UI/UX design project.",
-    hue: 292,
-  },
-  {
-    slug: "the-food-coach",
-    title: "The Food Coach",
-    category: "UI/UX Design",
-    summary: "A UI/UX design project.",
-    hue: 36,
-  },
-  {
-    slug: "sanskriti-ai",
-    title: "Sanskriti AI",
-    category: "AI · Language",
-    summary: "An offline translation project.",
-    hue: 210,
+    role: "Gamified SDG Learning Platform",
+    stack: ["React", "TypeScript", "Supabase", "Gemini API"],
+    repoUrl: "https://github.com/BHAVNAJAY/Eco-Learn",
+    externalUrl: "https://github.com/BHAVNAJAY/Eco-Learn",
   },
 ];
 
 export const projectsSection = {
   eyebrow: "Selected work",
   heading: "Projects",
-  intro: "From geospatial AI to offline disaster response — scroll through the reel.",
+  intro: "AI, full-stack, and design — scroll through the reel.",
 };

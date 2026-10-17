@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import { motion, useMotionValue, useTransform, type MotionValue } from "motion/react";
@@ -57,7 +58,23 @@ export default function ProjectCard({ project, index, onOpen, trackX, center = 0
   const scale = useTransform(dist, (d) => (trackX ? 1 - d * 0.08 : 1));
   const opacity = useTransform(dist, (d) => (trackX ? 1 - d * 0.45 : 1));
 
+  // touch: first tap reveals the info (blurred backdrop), second tap opens the project
+  const ref = useRef<HTMLElement>(null);
+  const [active, setActive] = useState(false);
+  useEffect(() => {
+    if (!active) return;
+    const away = (e: PointerEvent) => {
+      if (!ref.current?.contains(e.target as Node)) setActive(false);
+    };
+    document.addEventListener("pointerdown", away);
+    return () => document.removeEventListener("pointerdown", away);
+  }, [active]);
+
   const handle = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (window.matchMedia("(hover: none)").matches && !active) {
+      setActive(true);
+      return;
+    }
     if (project.externalUrl) {
       window.open(project.externalUrl, "_blank", "noopener,noreferrer");
       return;
@@ -66,7 +83,7 @@ export default function ProjectCard({ project, index, onOpen, trackX, center = 0
   };
 
   return (
-    <motion.article className={styles.card} style={{ scale, opacity }}>
+    <motion.article ref={ref} className={styles.card} style={{ scale, opacity }} data-active={active || undefined}>
       <button
         type="button"
         className={styles.cardButton}
