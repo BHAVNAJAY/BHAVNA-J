@@ -110,6 +110,7 @@ export const projects: Project[] = [
     summary:
       "A gamified learning platform that promotes awareness of the UN Sustainable Development Goals through interactive lessons, quizzes, and sustainability challenges, encouraging students to connect learning with real-world action.",
     hue: 96,
+    thumbnail: "/projects/ecolearn.png",
     role: "Gamified SDG Learning Platform",
     stack: ["React", "TypeScript", "Supabase", "Gemini API"],
     repoUrl: "https://github.com/BHAVNAJAY/Eco-Learn",
