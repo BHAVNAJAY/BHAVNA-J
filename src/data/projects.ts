@@ -47,6 +47,7 @@ export const projects: Project[] = [
     summary:
       "A full-stack CRM that transforms natural-language business goals into AI-generated customer audiences, personalized campaign messages, and recommended send times.",
     hue: 328,
+    thumbnail: "/projects/ping.png",
     role: "AI-Powered CRM for Smarter Customer Engagement",
     stack: ["React", "Node.js", "Express.js", "MongoDB", "OpenAI API"],
     demoUrl: "https://ping-ecru-nu.vercel.app/",
@@ -59,6 +60,7 @@ export const projects: Project[] = [
     summary:
       "An NLP-powered interview practice platform that analyzes interview responses using TF-IDF similarity, grammar correction, and keyword matching to provide structured feedback.",
     hue: 262,
+    thumbnail: "/projects/iready.png",
     role: "AI Interview Practice Platform",
     stack: ["React", "Flask", "Python", "Scikit-learn", "TextBlob", "NLTK", "ReportLab"],
     demoUrl: "https://i-ready-alpha.vercel.app/",
@@ -95,6 +97,7 @@ export const projects: Project[] = [
     summary:
       "A full-stack notes application featuring Google OAuth authentication, search, pagination, and a responsive user interface for managing notes efficiently.",
     hue: 210,
+    thumbnail: "/projects/notify.png",
     role: "Full-Stack Notes Application",
     stack: ["React", "Node.js", "Express.js", "MongoDB", "Google OAuth"],
     demoUrl: "https://notify-yh0m.onrender.com/",
