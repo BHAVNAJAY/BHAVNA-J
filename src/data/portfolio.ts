@@ -86,27 +86,80 @@ export const about = {
 
 /* ── Skills ────────────────────────────────────────────────── */
 
+export type Skill = { name: string; logo?: string; icon?: string };
+
 export const skills = {
   heading: "Skills & Toolkit",
-  intro: "Three disciplines, one toolkit.",
   groups: [
-    {
-      title: "Design",
-      icon: "pen" as const,
-      items: ["Figma", "Canva", "Adobe Illustrator", "UI/UX", "Graphic Design"],
-    },
     {
       title: "Development",
       icon: "code" as const,
-      items: ["HTML", "CSS", "JavaScript", "React", "Node.js", "Python", "SQL", "MongoDB", "PostgreSQL"],
+      items: [
+        { name: "Python", logo: "/skills/python.svg" },
+        { name: "JavaScript", logo: "/skills/javascript.svg" },
+        { name: "TypeScript", logo: "/skills/typescript.svg" },
+        { name: "React.js", logo: "/skills/react.svg" },
+        { name: "Next.js", logo: "/skills/nextjs.svg" },
+        { name: "Node.js", logo: "/skills/nodejs.svg" },
+        { name: "Express.js", logo: "/skills/express.svg" },
+        { name: "Flask", logo: "/skills/flask.svg" },
+        { name: "FastAPI", logo: "/skills/fastapi.svg" },
+        { name: "SQL", icon: "database" },
+        { name: "MongoDB", logo: "/skills/mongodb.svg" },
+        { name: "PostgreSQL", logo: "/skills/postgresql.svg" },
+        { name: "Supabase", logo: "/skills/supabase.svg" },
+        { name: "REST APIs", icon: "plug" },
+        { name: "Git", logo: "/skills/git.svg" },
+        { name: "GitHub", logo: "/skills/github.svg" },
+      ] as Skill[],
     },
     {
-      title: "Marketing & Analytics",
+      title: "Design & Visualisation",
+      icon: "pen" as const,
+      items: [
+        { name: "Figma", logo: "/skills/figma.svg" },
+        { name: "Canva", logo: "/skills/canva.svg" },
+        { name: "Adobe Illustrator", logo: "/skills/illustrator.svg" },
+        { name: "Adobe Photoshop", logo: "/skills/photoshop.svg" },
+        { name: "Blender", logo: "/skills/blender.svg" },
+        { name: "UI/UX Design", icon: "layout" },
+        { name: "Prototyping", icon: "shapes" },
+        { name: "Graphic Design", icon: "pen" },
+        { name: "Branding", icon: "badge" },
+      ] as Skill[],
+    },
+    {
+      title: "AI & Machine Learning",
+      icon: "ai" as const,
+      items: [
+        { name: "Generative AI", icon: "sparkles" },
+        { name: "LLMs", icon: "message" },
+        { name: "Prompt Engineering", icon: "terminal" },
+        { name: "RAG", icon: "search" },
+        { name: "Embeddings", icon: "network" },
+        { name: "Agentic AI", icon: "bot" },
+        { name: "NLP", icon: "languages" },
+        { name: "Computer Vision", icon: "eye" },
+        { name: "PyTorch", logo: "/skills/pytorch.svg" },
+        { name: "Scikit-learn", logo: "/skills/scikitlearn.svg" },
+        { name: "Pandas", logo: "/skills/pandas.svg" },
+        { name: "NumPy", logo: "/skills/numpy.svg" },
+        { name: "Gemini API", icon: "sparkles" },
+        { name: "OpenAI API", icon: "bot" },
+      ] as Skill[],
+    },
+    {
+      title: "Marketing & Growth",
       icon: "chart" as const,
-      items: ["Digital Marketing", "A/B Testing", "Meta Ads Manager", "LinkedIn Ads", "Power BI", "Tableau"],
+      items: [
+        { name: "Digital Marketing" },
+        { name: "Social Media Marketing" },
+        { name: "A/B Testing" },
+        { name: "Engagement Analysis" },
+        { name: "Brand Communication" },
+      ] as Skill[],
     },
   ],
-  additional: { title: "Additional tools", items: ["Oracle EPM / EPBCS", "Oracle APEX"] },
 };
 
 /* ── Hobbies ───────────────────────────────────────────────── */

@@ -73,6 +73,7 @@ export const projects: Project[] = [
     summary:
       "An AI-powered hospital platform that predicts patient length of stay, ward requirements, and overflow probability to support smarter triage and resource planning.",
     hue: 14,
+    thumbnail: "/projects/netra.png",
     role: "AI-Powered Patient Flow & Hospital Operations Platform",
     stack: ["Python", "FastAPI", "Scikit-learn", "Pandas", "NumPy", "Next.js", "Supabase"],
     repoUrl: "https://github.com/BHAVNAJAY/Netra",
@@ -85,6 +86,7 @@ export const projects: Project[] = [
     summary:
       "A Node.js-based graph analysis tool that parses node strings, detects hierarchical tree structures, identifies cycles, and analyzes graph relationships using graph algorithms.",
     hue: 36,
+    thumbnail: "/projects/structify.png",
     role: "BFHL Node Hierarchy Analyzer",
     stack: ["React", "Node.js", "REST APIs", "Graph Algorithms", "JavaScript"],
     demoUrl: "https://structifybybhavna.netlify.app/",

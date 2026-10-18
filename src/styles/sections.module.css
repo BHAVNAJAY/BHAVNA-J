@@ -135,17 +135,15 @@
 
 .skillCols {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  border-top: 1px solid var(--line-strong);
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(16px, 2vw, 28px);
 }
 
 .skillCol {
-  padding: 28px clamp(16px, 2.5vw, 40px) 36px 0;
-}
-
-.skillCol + .skillCol {
-  padding-left: clamp(16px, 2.5vw, 40px);
-  border-left: 1px solid var(--line);
+  padding: clamp(22px, 2.6vw, 36px);
+  border: 1px solid var(--line-strong);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.025);
 }
 
 .skillHead {
@@ -162,96 +160,59 @@
 }
 
 .skillTitle {
-  margin: 28px 0 22px;
+  margin: 22px 0 22px;
   font-family: var(--font-serif);
   font-weight: 400;
   font-style: italic;
-  font-size: clamp(30px, 3vw, 44px);
+  font-size: clamp(28px, 2.8vw, 40px);
   line-height: 1;
 }
 
-.skillList {
+.skillChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.skillList li {
-  padding: 11px 0;
-  border-bottom: 1px solid var(--line);
-  font-size: 16px;
-  color: var(--white);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  transition: color 0.3s, padding 0.4s var(--ease);
-}
-
-.skillList li::before {
-  content: "";
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--lavender);
-  opacity: 0.6;
-  flex: none;
-}
-
-.skillList li:hover {
-  color: var(--pink);
-  padding-left: 6px;
-}
-
-.extraTools {
-  margin-top: clamp(32px, 4vw, 48px);
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 16px 28px;
-  padding: 22px 0;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-}
-
-.extraLabel {
+.skillChips li {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--muted-2);
-}
-
-.extraTools ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.extraTools li {
-  padding: 6px 14px;
+  gap: 9px;
+  padding: 8px 14px 8px 10px;
   border: 1px solid var(--line-strong);
   border-radius: 999px;
-  font-size: 14px;
+  font-size: 15px;
+  color: var(--white);
+  transition: color 0.3s, border-color 0.3s, transform 0.4s var(--ease);
+}
+
+.skillChips li:hover {
+  color: var(--pink);
+  border-color: var(--pink);
+  transform: translateY(-2px);
+}
+
+/* brand logos sit on a light tile so dark marks (GitHub, Next.js…) stay visible */
+.chipLogo {
+  flex: none;
+  box-sizing: content-box;
+  padding: 3px;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.94);
+  object-fit: contain;
+}
+
+.chipIcon {
+  flex: none;
   color: var(--lavender);
 }
 
 @media (max-width: 860px) {
   .skillCols {
     grid-template-columns: 1fr;
-  }
-  .skillCol,
-  .skillCol + .skillCol {
-    padding: 28px 0 32px;
-    border-left: 0;
-  }
-  .skillCol + .skillCol {
-    border-top: 1px solid var(--line);
   }
 }
 
