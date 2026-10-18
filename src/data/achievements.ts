@@ -24,13 +24,20 @@ export const achievements: {
   turnDirection: "right-to-left",
   pageAspect: 900 / 1200,
   pages: [
-    { src: "/achievements/cover.png", alt: "Achievements booklet — cover" },
-    { src: "/achievements/page-01.png", alt: "Achievements — page 1" },
-    { src: "/achievements/page-02.png", alt: "Achievements — page 2" },
-    { src: "/achievements/page-03.png", alt: "Achievements — page 3" },
-    { src: "/achievements/page-04.png", alt: "Achievements — page 4" },
-    { src: "/achievements/back-cover.png", alt: "Achievements booklet — back cover" },
+    { src: "/achievements/cover.png", alt: "Bhavna's Book of Achievements — cover" },
+    { src: "/achievements/page-01.png", alt: "Organizer — Poster Design Competition" },
+    { src: "/achievements/page-02.png", alt: "AI Webinar — Speaker" },
+    { src: "/achievements/page-03.png", alt: "Designed for CoinEx Global" },
+    { src: "/achievements/page-04.png", alt: "Builders Qoneqt — Management" },
+    { src: "/achievements/page-05.png", alt: "Guest Speaker — AI Awareness Session" },
+    { src: "/achievements/page-06.png", alt: "AI Webinar — Speaker (Ignite 2025)" },
+    { src: "/achievements/page-07.png", alt: "Performance Excellence Award — Finan Consulting" },
+    { src: "/achievements/page-08.png", alt: "Hackverse'24 — Organizer & Designer" },
+    { src: "/achievements/page-09.png", alt: "Runner Up — Nxt Gen Hackathon" },
+    { src: "/achievements/page-10.png", alt: "Smart India Hackathon (SIH 2025) — Winner" },
+    { src: "/achievements/back-cover.png", alt: "More milestones to achieve — back cover" },
   ],
+
   /** Optional: a downloadable PDF version, e.g. "/achievements/achievements.pdf". Empty = hidden. */
   pdf: "",
 };
