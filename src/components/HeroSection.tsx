@@ -137,7 +137,7 @@ export default function HeroSection() {
     <section id="home" ref={sectionRef} className={styles.hero} data-reduced={reduced || undefined} aria-label="Introduction">
       <div className={styles.stage}>
         <h1 className="visually-hidden">
-          {site.name} — {site.positioning}
+          {site.name} — Portfolio
         </h1>
 
         <motion.div className={styles.canvasWrap} style={{ opacity: stageOpacity }}>
@@ -187,10 +187,6 @@ export default function HeroSection() {
 
         <FloatingRoles rect={rect} progress={scrollYProgress} show={ready} reduced={reduced} />
 
-        <motion.p className={styles.tagline} style={{ opacity: hintOpacity }}>
-          <span className="serif">Mastering the 3D&rsquo;s</span>
-          <span>Design · Development · Digital Marketing</span>
-        </motion.p>
         <motion.a href="#about" className={styles.scrollHint} style={{ opacity: hintOpacity }}>
           Scroll
           <span aria-hidden className={styles.scrollLine} />

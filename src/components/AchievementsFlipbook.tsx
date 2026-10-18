@@ -500,9 +500,6 @@ export default function AchievementsFlipbook() {
                 {achievements.heading}
               </h2>
             </Reveal>
-            <Reveal delay={0.05}>
-              <p className={`${styles.subtitle} serif`}>{achievements.subtitle}</p>
-            </Reveal>
           </div>
 
           <div className={styles.bookArea}>

@@ -4,8 +4,6 @@ import AboutSection from "@/components/AboutSection";
 import SkillsSection from "@/components/SkillsSection";
 import ProjectsSection from "@/components/ProjectsSection";
 import AchievementsFlipbook from "@/components/AchievementsFlipbook";
-import HobbiesSection from "@/components/HobbiesSection";
-import ResumeSection from "@/components/ResumeSection";
 import ContactSection from "@/components/ContactSection";
 import ExperienceSection from "@/components/ExperienceSection";
 import Footer from "@/components/Footer";
@@ -39,8 +37,6 @@ export default function Home() {
         <ExperienceSection />
         <ProjectsSection />
         <AchievementsFlipbook />
-        <HobbiesSection />
-        <ResumeSection available={resumeAvailable} />
         <ContactSection resumeAvailable={resumeAvailable} />
       </main>
       <Footer />

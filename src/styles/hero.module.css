@@ -97,29 +97,6 @@
 }
 
 /* ── small editorial details ─────────────────────── */
-.tagline {
-  position: absolute;
-  left: var(--gutter);
-  bottom: clamp(20px, 4vh, 36px);
-  z-index: 2;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--muted-2);
-}
-
-.tagline .serif,
-.tagline :global(.serif) {
-  font-size: 22px;
-  letter-spacing: 0;
-  color: var(--lavender);
-}
-
 .scrollHint {
   position: absolute;
   right: var(--gutter);

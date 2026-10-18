@@ -10,8 +10,6 @@
 export const site = {
   name: "Bhavna Jayakumar",
   shortName: "Bhavna J.",
-  positioning: "Design × Development × Digital Marketing",
-  tagline: "Mastering the 3D's — Design, Development & Digital Marketing.",
   description:
     "Portfolio of Bhavna Jayakumar — Computer Science (AI & ML) student, full-stack developer, UI/UX and graphic designer, and digital marketer.",
 };
@@ -33,16 +31,12 @@ export const badge = {
     title: "Developer & Designer",
     /** Small printed details on the insert (purely typographic). */
     metaLeft: "PORTFOLIO",
-    metaRight: "DESIGN × DEV × MKTG",
     signature: "Bhavna",
-    pill: "Design × Development × Digital Marketing",
   },
 
   back: {
     heading: "What I do",
     roles: ["Developer", "Designer", "Facilitator"],
-    footerScript: "Mastering the 3D's",
-    footerSmall: "DESIGN · DEVELOPMENT · DIGITAL MARKETING",
   },
 
   /** Accessible label for the interactive badge. */
@@ -55,9 +49,9 @@ export const badge = {
  * accent: true renders the label in pale pink instead of white.
  */
 export const heroRoles: { text: string; position: "tl" | "tr" | "bl" | "br"; accent?: boolean }[] = [
-  { text: "DESIGNER", position: "tl" },
+  { text: "CREATIVE LEADER", position: "tl" },
   { text: "DEVELOPER", position: "tr", accent: true },
-  { text: "CREATIVE LEADER", position: "bl", accent: true },
+  { text: "DESIGNER", position: "bl", accent: true },
   { text: "PUBLIC SPEAKER", position: "br" },
 ];
 
@@ -79,7 +73,6 @@ export const about = {
   ],
   facts: [
     { label: "Studying", value: "Computer Science — AI & ML" },
-    { label: "Focus", value: "Design · Development · Marketing" },
     { label: "Roles", value: "Developer, Designer, Facilitator" },
   ],
 };
@@ -160,24 +153,6 @@ export const skills = {
       ] as Skill[],
     },
   ],
-};
-
-/* ── Hobbies ───────────────────────────────────────────────── */
-
-/**
- * PLACEHOLDERS — replace with your real hobbies.
- * Set `placeholder: false` (or delete the field) once an entry is real.
- * Optional `image` = path under /public, e.g. "/images/hobby-1.jpg".
- */
-export const hobbies: { title: string; description: string; image?: string; placeholder?: boolean }[] = [
-  { title: "Hobby one", description: "A line or two about something you love doing outside of work.", placeholder: true },
-  { title: "Hobby two", description: "Add a photo for a warmer, more personal feel.", placeholder: true },
-  { title: "Hobby three", description: "Edit these in src/data/portfolio.ts → hobbies.", placeholder: true },
-];
-
-export const hobbiesSection = {
-  eyebrow: "Off the clock",
-  heading: "Hobbies & interests",
 };
 
 /* ── Resume & contact ──────────────────────────────────────── */

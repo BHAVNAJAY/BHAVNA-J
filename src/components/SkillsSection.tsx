@@ -47,9 +47,6 @@ export default function SkillsSection() {
     <section id="skills" className={`section ${styles.skills}`} aria-labelledby="skills-title">
       <div className="container">
         <div className="section-head">
-          <Reveal>
-            <span className="eyebrow">Toolkit</span>
-          </Reveal>
           <Reveal delay={0.05}>
             <h2 id="skills-title" className="section-title display">
               {skills.heading.split("&")[0]}

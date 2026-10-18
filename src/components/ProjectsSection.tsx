@@ -78,9 +78,6 @@ export default function ProjectsSection() {
   const header = (
     <div className={`container ${styles.head}`}>
       <div>
-        <Reveal>
-          <span className="eyebrow">{projectsSection.eyebrow}</span>
-        </Reveal>
         <Reveal delay={0.05}>
           <h2 id="projects-title" className="section-title display">
             {projectsSection.heading}
@@ -88,7 +85,6 @@ export default function ProjectsSection() {
         </Reveal>
       </div>
       <Reveal delay={0.1} className={styles.headAside}>
-        <p>{projectsSection.intro}</p>
         <span className={styles.count}>
           {String(projects.length).padStart(2, "0")} <span>projects</span>
         </span>

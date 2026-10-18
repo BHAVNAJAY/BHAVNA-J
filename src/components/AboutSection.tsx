@@ -25,9 +25,6 @@ export default function AboutSection() {
         </Reveal>
 
         <div className={styles.aboutText}>
-          <Reveal>
-            <span className="eyebrow">{about.eyebrow}</span>
-          </Reveal>
           <Reveal delay={0.05}>
             <h2 id="about-title" className={styles.aboutHeading}>
               {about.heading}

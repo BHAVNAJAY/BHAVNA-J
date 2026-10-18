@@ -9,10 +9,10 @@ import { site } from "@/data/portfolio";
 import SmoothScroll from "@/components/SmoothScroll";
 
 export const metadata: Metadata = {
-  title: `${site.name} — ${site.positioning}`,
+  title: `${site.name} — Portfolio`,
   description: site.description,
   openGraph: {
-    title: `${site.name} — ${site.positioning}`,
+    title: `${site.name} — Portfolio`,
     description: site.description,
     type: "website",
   },

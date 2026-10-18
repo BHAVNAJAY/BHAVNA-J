@@ -154,9 +154,6 @@ export default function ExperienceSection() {
     <section id="experience" className={styles.section} aria-labelledby="exp-title">
       <div className={`container ${styles.inner}`}>
         <div className={styles.head}>
-          <Reveal>
-            <span className={styles.eyebrow}>{experienceSection.eyebrow}</span>
-          </Reveal>
           <Reveal delay={0.05}>
             <h2 id="exp-title" className={`${styles.title} display`}>
               {experienceSection.heading}

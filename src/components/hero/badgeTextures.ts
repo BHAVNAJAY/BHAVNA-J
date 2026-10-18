@@ -157,7 +157,6 @@ export function drawFront(canvas: HTMLCanvasElement, portrait: HTMLImageElement 
   ctx.textBaseline = "middle";
   setFont(ctx, `700 21px ${F.body}`);
   spaced(ctx, f.metaLeft, p, 80, 5);
-  spaced(ctx, f.metaRight, W - p, 80, 5, "right");
 
   // portrait window
   const px = p,
@@ -236,30 +235,8 @@ export function drawFront(canvas: HTMLCanvasElement, portrait: HTMLImageElement 
   ctx.fillStyle = C.line;
   ctx.fillRect(p, 1128, W - p * 2, 2);
 
-  // positioning pill
-  setFont(ctx, `700 21px ${F.body}`);
-  const pillText = f.pill.toUpperCase();
-  const textW = [...pillText].reduce((a, c) => a + ctx.measureText(c).width, 0) + 3 * (pillText.length - 1);
-  const pillW = Math.min(W - p * 2, textW + 96);
-  roundRect(ctx, p, 1168, pillW, 62, 31);
-  ctx.fillStyle = "rgba(239,186,212,0.28)";
-  ctx.fill();
-  ctx.strokeStyle = "rgba(217,134,176,0.45)";
-  ctx.lineWidth = 2;
-  ctx.stroke();
-  ctx.fillStyle = C.pinkDeep;
-  ctx.beginPath();
-  ctx.arc(p + 34, 1199, 8, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.fillStyle = C.ink;
-  ctx.textBaseline = "middle";
-  spaced(ctx, pillText, p + 58, 1200, 3);
-
   // footer
   ctx.textBaseline = "alphabetic";
-  ctx.fillStyle = C.inkSoft;
-  setFont(ctx, `italic 400 46px ${F.serif}`);
-  ctx.fillText(badge.back.footerScript, p, H - 70);
   ctx.fillStyle = C.meta;
   setFont(ctx, `700 16px ${F.body}`);
   spaced(ctx, "DEVELOPER & DESIGNER", W - p, H - 82, 5, "right");
@@ -371,24 +348,6 @@ export function drawBack(canvas: HTMLCanvasElement) {
     spaced(ctx, String(i + 1).padStart(2, "0"), W - p - 40, y + rowH / 2, 4, "right");
     ctx.textBaseline = "alphabetic";
   });
-
-  // script line with a hand-drawn underline
-  const sy = 1035;
-  ctx.fillStyle = C.ink;
-  const sSize = fitSize(ctx, b.footerScript, F.serif, 400, 92, W - p * 2);
-  setFont(ctx, `italic 400 ${sSize}px ${F.serif}`);
-  ctx.fillText(b.footerScript, p, sy);
-  ctx.strokeStyle = C.pinkDeep;
-  ctx.lineWidth = 4;
-  ctx.lineCap = "round";
-  ctx.beginPath();
-  ctx.moveTo(p + 4, sy + 34);
-  ctx.bezierCurveTo(p + 240, sy + 16, p + 520, sy + 52, p + 700, sy + 26);
-  ctx.stroke();
-
-  ctx.fillStyle = C.inkSoft;
-  setFont(ctx, `700 20px ${F.body}`);
-  spaced(ctx, b.footerSmall, p, 1160, 4);
 
   ctx.fillStyle = C.line;
   ctx.fillRect(p, 1215, W - p * 2, 2);

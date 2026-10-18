@@ -121,7 +121,5 @@ export const projects: Project[] = [
 ];
 
 export const projectsSection = {
-  eyebrow: "Selected work",
   heading: "Projects",
-  intro: "AI, full-stack, and design — scroll through the reel.",
 };
