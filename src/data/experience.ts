@@ -25,32 +25,46 @@ export const experienceSection = {
 
 export const experiences: Experience[] = [
   {
-    title: "NSS",
-    org: "National Service Scheme",
-    period: "Add dates",
-    description: "Add a line or two about your role and what you did here.",
-    placeholder: true,
+    title: "Full Stack Developer Intern",
+    org: "Finan Consulting · Internship · Remote, Chennai",
+    period: "Jun 2025 – Aug 2026",
+    description:
+      "Contributed to the development and improvement of SaaS applications across frontend and backend. Built responsive web interfaces, integrated REST APIs, authentication flows, and AI-powered features. Supported testing, debugging, and user acceptance testing (UAT) to improve product reliability and user experience.",
   },
   {
-    title: "CSI",
-    org: "Computer Society of India",
-    period: "Add dates",
-    description: "Add a line or two about your role and what you did here.",
-    placeholder: true,
+    title: "Design Head",
+    org: "CodeKrafters, SRMIST · Chennai",
+    period: "Apr 2025 – Jul 2026",
+    description:
+      "Led and mentored the club’s creative team across UI/UX design, visual design, and video editing. Guided creative direction, maintained design consistency, and encouraged user-centred design practices. Coordinated team contributions to deliver high-quality visual content and digital experiences.",
   },
   {
-    title: "Creative Head",
-    org: "CodeKrafters Club",
-    period: "Add dates",
-    description: "Add a line or two about what you led and created as Creative Head.",
-    placeholder: true,
+    title: "Design Lead",
+    org: "CodeKrafters, SRMIST · Chennai",
+    period: "Aug 2024 – Jun 2025",
+    description:
+      "Mentored team members in design fundamentals and practical workflows. Conducted Figma training sessions, assigned hands-on design tasks, and supported the development of consistent, engaging visual experiences across club projects.",
   },
   {
-    title: "Full Stack Development Internship",
-    org: "Company name",
-    period: "Add dates",
-    description: "Add a line or two about what you built and the stack you used.",
-    placeholder: true,
+    title: "Student Coordinator",
+    org: "National Service Scheme (NSS), SRMIST · Chennai",
+    period: "Dec 2023 – Sep 2026",
+    description:
+      "Coordinate student participation in community outreach initiatives and campus events. Support the planning and execution of awareness programmes, including blood donation drives and dental camps, contributing to community wellbeing and student engagement.",
+  },
+  {
+    title: "Executive Member",
+    org: "Computer Society of India (CSI), SRMIST · Chennai",
+    period: "Mar 2024 – Mar 2025",
+    description:
+      "Contributed to organising technical workshops and student learning initiatives. Supported event coordination and helped create opportunities for students to explore technology, exchange knowledge, and engage with the computing community.",
+  },
+  {
+    title: "Design Team Member",
+    org: "CodeKrafters, SRMIST · Chennai",
+    period: "Nov 2023 – Nov 2024",
+    description:
+      "Contributed to the club’s design activities, creating visual assets and supporting web design tasks. Collaborated with team members to develop creative content and maintain consistency across digital materials.",
   },
 ];
 
