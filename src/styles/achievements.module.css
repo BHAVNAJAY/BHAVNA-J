@@ -32,8 +32,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  margin-bottom: 4px;
+  gap: 10px;
+  margin-bottom: clamp(14px, 2.4svh, 26px);
   text-align: center;
   pointer-events: none;
 }

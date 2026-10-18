@@ -127,6 +127,14 @@ function paper(ctx: CanvasRenderingContext2D, w: number, h: number) {
   ctx.globalAlpha = 1;
 }
 
+/** Fine keyline inset from the insert's (square) edge. */
+function frame(ctx: CanvasRenderingContext2D, w: number, h: number) {
+  const inset = 22;
+  ctx.strokeStyle = C.line;
+  ctx.lineWidth = 2;
+  ctx.strokeRect(inset, inset, w - inset * 2, h - inset * 2);
+}
+
 /** Deterministic decorative barcode. */
 function barcode(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, seed = 7) {
   ctx.fillStyle = C.ink;
@@ -151,6 +159,7 @@ export function drawFront(canvas: HTMLCanvasElement, portrait: HTMLImageElement 
   const p = 60;
   const f = badge.front;
   paper(ctx, W, H);
+  frame(ctx, W, H);
 
   // meta row
   ctx.fillStyle = C.meta;
@@ -162,7 +171,7 @@ export function drawFront(canvas: HTMLCanvasElement, portrait: HTMLImageElement 
   const px = p,
     py = 118,
     pw = W - p * 2,
-    ph = 760,
+    ph = H - 118 - 262, // portrait runs down to the name block, which is anchored to the bottom
     pr = 34;
   ctx.save();
   roundRect(ctx, px, py, pw, ph, pr);
@@ -208,38 +217,28 @@ export function drawFront(canvas: HTMLCanvasElement, portrait: HTMLImageElement 
   ctx.lineWidth = 2;
   ctx.stroke();
 
-  // name + title (left column)
-  const leftW = 600;
+  // bottom block: name + title on the left; signature, barcode and name tag on the right
+  const by = py + ph; // bottom edge of the portrait
+  const leftW = 560;
   ctx.textBaseline = "alphabetic";
   ctx.fillStyle = C.ink;
-  const nameSize = fitSize(ctx, f.name, F.display, 900, 112, leftW, "ultra-expanded");
+  const nameSize = fitSize(ctx, f.name, F.display, 900, 104, leftW, "ultra-expanded");
   setFont(ctx, `900 ${nameSize}px ${F.display}`, "ultra-expanded");
-  ctx.fillText(f.name, p - 2, 1010);
+  ctx.fillText(f.name, p - 2, by + 112);
   ctx.fillStyle = C.inkSoft;
   const tSize = fitSize(ctx, f.title, F.body, 600, 40, leftW);
   setFont(ctx, `600 ${tSize}px ${F.body}`);
-  ctx.fillText(f.title, p, 1068);
+  ctx.fillText(f.title, p, by + 174);
 
-  // signature + barcode (right column)
   ctx.fillStyle = C.lavDeep;
   setFont(ctx, `italic 400 68px ${F.serif}`);
   ctx.textAlign = "right";
-  ctx.fillText(f.signature, W - p, 975);
+  ctx.fillText(f.signature, W - p, by + 92);
   ctx.textAlign = "left";
-  barcode(ctx, W - p - 240, 1000, 240, 58);
+  barcode(ctx, W - p - 240, by + 116, 240, 58);
   ctx.fillStyle = C.meta;
   setFont(ctx, `700 16px ${F.body}`);
-  spaced(ctx, "BHAVNA J.", W - p, 1082, 6, "right");
-
-  // divider
-  ctx.fillStyle = C.line;
-  ctx.fillRect(p, 1128, W - p * 2, 2);
-
-  // footer
-  ctx.textBaseline = "alphabetic";
-  ctx.fillStyle = C.meta;
-  setFont(ctx, `700 16px ${F.body}`);
-  spaced(ctx, "DEVELOPER & DESIGNER", W - p, H - 82, 5, "right");
+  spaced(ctx, "BHAVNA J.", W - p, by + 200, 6, "right");
 }
 
 /* ── BACK ────────────────────────────────────────────────── */
@@ -304,13 +303,14 @@ const ROLE_STYLE: { fill: string; ink: string; icon: IconKind }[] = [
   { fill: C.peach, ink: C.peachDeep, icon: "people" },
 ];
 
-export function drawBack(canvas: HTMLCanvasElement) {
+export function drawBack(canvas: HTMLCanvasElement, qr: HTMLImageElement | null = null) {
   const W = canvas.width;
   const H = canvas.height;
   const ctx = canvas.getContext("2d") as Ctx;
   const p = 60;
   const b = badge.back;
   paper(ctx, W, H);
+  frame(ctx, W, H);
 
   ctx.textBaseline = "alphabetic";
   ctx.fillStyle = C.ink;
@@ -348,6 +348,55 @@ export function drawBack(canvas: HTMLCanvasElement) {
     spaced(ctx, String(i + 1).padStart(2, "0"), W - p - 40, y + rowH / 2, 4, "right");
     ctx.textBaseline = "alphabetic";
   });
+
+  // "Connect with Me" + curved arrow → QR, in the free space under the role rows
+  const qrBox = 262;
+  const qx = W - p - qrBox;
+  const qy = 912;
+  if (qr) {
+    roundRect(ctx, qx, qy, qrBox, qrBox, 30);
+    ctx.fillStyle = "#ffffff";
+    ctx.fill();
+    ctx.strokeStyle = C.line;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.imageSmoothingEnabled = false; // keep the QR modules crisp
+    ctx.drawImage(qr, qx + 16, qy + 16, qrBox - 32, qrBox - 32);
+    ctx.imageSmoothingEnabled = true;
+  }
+
+  ctx.fillStyle = C.ink;
+  const [first, ...rest] = b.connect.split(" ");
+  const lines = [first, rest.join(" ")].filter(Boolean);
+  const cSize = fitSize(ctx, lines.reduce((a, l) => (l.length > a.length ? l : a), ""), F.serif, 400, 96, qx - p - 70);
+  setFont(ctx, `italic 400 ${cSize}px ${F.serif}`);
+  lines.forEach((l, i) => ctx.fillText(l, p + 6, 985 + i * (cSize * 0.98)));
+
+  if (qr) {
+    // hand-drawn curved arrow: from under the text, sweeping up into the QR
+    const sx = p + 40;
+    const sy = 985 + (lines.length - 1) * (cSize * 0.98) + 44;
+    const ex = qx - 18;
+    const ey = qy + qrBox * 0.6;
+    const c1x = sx + 150;
+    const c1y = sy + 78;
+    const c2x = ex - 120;
+    const c2y = ey + 70;
+    ctx.strokeStyle = C.pinkDeep;
+    ctx.lineWidth = 6;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.beginPath();
+    ctx.moveTo(sx, sy);
+    ctx.bezierCurveTo(c1x, c1y, c2x, c2y, ex, ey);
+    ctx.stroke();
+    const ang = Math.atan2(ey - c2y, ex - c2x);
+    ctx.beginPath();
+    ctx.moveTo(ex - 30 * Math.cos(ang - 0.5), ey - 30 * Math.sin(ang - 0.5));
+    ctx.lineTo(ex, ey);
+    ctx.lineTo(ex - 30 * Math.cos(ang + 0.5), ey - 30 * Math.sin(ang + 0.5));
+    ctx.stroke();
+  }
 
   ctx.fillStyle = C.line;
   ctx.fillRect(p, 1215, W - p * 2, 2);

@@ -16,7 +16,7 @@ export const CARD = {
   R: 0.17, // corner radius
   bevel: 0.022,
   slot: { w: 0.56, h: 0.085, r: 0.042, fromTop: 0.2 },
-  insert: { w: 1.8, topInset: 0.36, bottomInset: 0.1, r: 0.09 },
+  insert: { w: 1.8, topInset: 0.36, bottomInset: 0.1, r: 0.001 }, // square corners
   /** distance from the hang point (lanyard end) down to the card's top edge */
   hang: 0.34,
 };

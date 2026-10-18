@@ -19,6 +19,8 @@ export const site = {
 export const badge = {
   /** Portrait shown on the front insert. Replace the file or change the path. */
   portrait: "/images/portrait.jpg",
+  /** QR code printed on the back of the badge. */
+  qr: "/images/qr.png",
   /**
    * Where to focus when cropping the portrait into the badge window.
    * x / y are 0–1 fractions of the source image (0.5, 0.5 = centre).
@@ -37,6 +39,7 @@ export const badge = {
   back: {
     heading: "What I do",
     roles: ["Developer", "Designer", "Facilitator"],
+    connect: "Connect with Me",
   },
 
   /** Accessible label for the interactive badge. */

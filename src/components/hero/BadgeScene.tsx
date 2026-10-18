@@ -76,7 +76,7 @@ function Rig({ controller, hitRef, active, onFaceChange, onInteractive, onRestRe
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      const [, portrait] = await Promise.all([loadBadgeFonts(), loadImage(badge.portrait)]);
+      const [, portrait, qr] = await Promise.all([loadBadgeFonts(), loadImage(badge.portrait), loadImage(badge.qr)]);
       if (cancelled) return;
       const aniso = Math.min(8, gl.capabilities.getMaxAnisotropy());
       const make = (w: number, h: number, draw: (c: HTMLCanvasElement) => void, repeat = false) => {
@@ -93,7 +93,7 @@ function Rig({ controller, hitRef, active, onFaceChange, onInteractive, onRestRe
       const ih = Math.round((INSERT_PX_W * INSERT_H) / CARD.insert.w);
       setTex({
         front: make(INSERT_PX_W, ih, (c) => drawFront(c, portrait)),
-        back: make(INSERT_PX_W, ih, (c) => drawBack(c)),
+        back: make(INSERT_PX_W, ih, (c) => drawBack(c, qr)),
         ribbon: make(64, 256, drawRibbon, true),
       });
     })();
