@@ -108,7 +108,7 @@ export default function ProjectCard({ project, index, onOpen, trackX, center = 0
                 </ul>
               )}
               <span className={styles.open}>
-                {project.externalUrl ? "Visit project" : "View case study"} <ArrowUpRight size={16} aria-hidden />
+                {project.demoUrl ? `Explore ${project.title} Live` : project.externalUrl ? "Visit Project" : "View case study"} <ArrowUpRight size={16} aria-hidden />
               </span>
               </div>
             </div>

@@ -166,7 +166,7 @@ export default function ExperienceSection() {
 
         <div className={styles.timeline} ref={timelineRef} style={{ "--line-h": `${lineH}px` } as React.CSSProperties}>
           {/* the line, filling in black as she walks down it */}
-          <div className={styles.line} aria-hidden>
+          <div className={styles.line} style={nodes.length ? { height: nodes[nodes.length - 1], bottom: "auto" } : undefined} aria-hidden>
             <motion.div className={styles.lineFill} style={{ height: fillH }} />
           </div>
 
