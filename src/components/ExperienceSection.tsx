@@ -199,11 +199,11 @@ export default function ExperienceSection() {
                 >
                   <div className={styles.cardTop}>
                     <span className={styles.num}>{String(i + 1).padStart(2, "0")}</span>
-                    <span className={styles.period}>{x.period}</span>
+                    {x.period && <span className={styles.period}>{x.period}</span>}
                   </div>
                   <h3 className={`${styles.cardTitle} display`}>{x.title}</h3>
-                  <p className={styles.org}>{x.org}</p>
-                  <p className={styles.desc}>{x.description}</p>
+                  {x.org && <p className={styles.org}>{x.org}</p>}
+                  {x.description && <p className={styles.desc}>{x.description}</p>}
                   {x.tags?.length ? (
                     <ul className={styles.tags}>
                       {x.tags.map((t) => (

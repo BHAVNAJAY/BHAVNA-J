@@ -11,9 +11,9 @@
 
 export type Experience = {
   title: string;
-  org: string;
-  period: string;
-  description: string;
+  org?: string;
+  period?: string;
+  description?: string;
   tags?: string[];
   placeholder?: boolean;
 };
@@ -26,24 +26,17 @@ export const experienceSection = {
 export const experiences: Experience[] = [
   {
     title: "Full Stack Developer Intern",
-    org: "Finan Consulting · Internship · Remote, Chennai",
+    org: "Finan Consulting, Chennai",
     period: "Jun 2025 – Aug 2026",
     description:
       "Contributed to the development and improvement of SaaS applications across frontend and backend. Built responsive web interfaces, integrated REST APIs, authentication flows, and AI-powered features. Supported testing, debugging, and user acceptance testing (UAT) to improve product reliability and user experience.",
   },
   {
-    title: "Design Head",
+    title: "Head",
     org: "CodeKrafters, SRMIST · Chennai",
     period: "Apr 2025 – Jul 2026",
     description:
       "Led and mentored the club’s creative team across UI/UX design, visual design, and video editing. Guided creative direction, maintained design consistency, and encouraged user-centred design practices. Coordinated team contributions to deliver high-quality visual content and digital experiences.",
-  },
-  {
-    title: "Design Lead",
-    org: "CodeKrafters, SRMIST · Chennai",
-    period: "Aug 2024 – Jun 2025",
-    description:
-      "Mentored team members in design fundamentals and practical workflows. Conducted Figma training sessions, assigned hands-on design tasks, and supported the development of consistent, engaging visual experiences across club projects.",
   },
   {
     title: "Student Coordinator",
@@ -60,11 +53,7 @@ export const experiences: Experience[] = [
       "Contributed to organising technical workshops and student learning initiatives. Supported event coordination and helped create opportunities for students to explore technology, exchange knowledge, and engage with the computing community.",
   },
   {
-    title: "Design Team Member",
-    org: "CodeKrafters, SRMIST · Chennai",
-    period: "Nov 2023 – Nov 2024",
-    description:
-      "Contributed to the club’s design activities, creating visual assets and supporting web design tasks. Collaborated with team members to develop creative content and maintain consistency across digital materials.",
+    title: "And I'm Just Getting Started.",
   },
 ];
 

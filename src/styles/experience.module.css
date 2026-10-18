@@ -159,27 +159,27 @@
   transform: scale(1.25);
 }
 
-/* connector from the dot to the card */
-.node::after {
+/* connector from the dot to the card edge — on the row (not the dot) so the dot's scale never stretches it into the card */
+.item::before {
   content: "";
   position: absolute;
-  top: 50%;
-  width: calc(var(--lane) / 2 - 12px);
+  top: 56px;
   height: 1px;
+  width: calc(var(--lane) / 2 - 12px);
   background: var(--exp-ink);
   opacity: 0.25;
   transition: opacity 0.4s var(--ease);
 }
 
-.item[data-side="left"] .node::after {
-  right: 100%;
+.item[data-side="left"]::before {
+  right: calc(50% + 12px);
 }
 
-.item[data-side="right"] .node::after {
-  left: 100%;
+.item[data-side="right"]::before {
+  left: calc(50% + 12px);
 }
 
-.item[data-active] .node::after {
+.item[data-active]::before {
   opacity: 0.8;
 }
 
@@ -318,11 +318,11 @@
   .item[data-side="left"] .tags {
     justify-content: flex-start;
   }
-  .item[data-side="left"] .node::after,
-  .item[data-side="right"] .node::after {
-    left: 100%;
+  .item[data-side="left"]::before,
+  .item[data-side="right"]::before {
+    left: calc(var(--lane) / 2 + 12px);
     right: auto;
-    width: 14px;
+    width: calc(var(--lane) / 2 - 12px);
   }
   .list {
     gap: 56px;
