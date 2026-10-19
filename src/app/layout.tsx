@@ -7,6 +7,7 @@ import "@fontsource/instrument-serif/400-italic.css";
 import "./globals.css";
 import { site } from "@/data/portfolio";
 import SmoothScroll from "@/components/SmoothScroll";
+import { withBase } from "@/lib/base";
 
 export const metadata: Metadata = {
   title: `${site.name} — Portfolio`,
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
     description: site.description,
     type: "website",
   },
-  icons: { icon: "/favicon.svg" },
+  icons: { icon: withBase("/favicon.svg") },
 };
 
 export const viewport: Viewport = {
@@ -27,7 +28,16 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      style={
+        {
+          // star tiles are referenced from CSS, so give it the base-path-aware URLs
+          "--stars-a": `url("${withBase("/stars/stars-a.svg")}")`,
+          "--stars-b": `url("${withBase("/stars/stars-b.svg")}")`,
+        } as React.CSSProperties
+      }
+    >
       <body>
         <SmoothScroll />
         {children}

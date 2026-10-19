@@ -6,6 +6,7 @@
  * by replacing a single file. The canvases become THREE.CanvasTexture maps.
  */
 import { badge } from "@/data/portfolio";
+import { withBase } from "@/lib/base";
 
 export const INSERT_PX_W = 1024;
 
@@ -56,7 +57,7 @@ export function loadImage(src: string): Promise<HTMLImageElement | null> {
     img.decoding = "async";
     img.onload = () => resolve(img);
     img.onerror = () => resolve(null);
-    img.src = src;
+    img.src = withBase(src);
   });
 }
 

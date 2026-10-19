@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
 import { about } from "@/data/portfolio";
+import { withBase } from "@/lib/base";
 import Reveal from "./Reveal";
 import styles from "@/styles/sections.module.css";
 
@@ -27,7 +28,7 @@ export default function AboutSection() {
         <div className={styles.aboutLeft}>
           <Reveal className={styles.aboutPhotoWrap}>
             <motion.div className={styles.aboutPhoto} style={{ y: photoY }}>
-              <Image src={about.photo} alt={about.photoAlt} fill priority sizes="(max-width: 860px) 90vw, 40vw" style={{ objectFit: "cover", objectPosition: "50% 45%" }} />
+              <Image src={withBase(about.photo)} alt={about.photoAlt} fill priority sizes="(max-width: 860px) 90vw, 40vw" style={{ objectFit: "cover", objectPosition: "50% 45%" }} />
             </motion.div>
           </Reveal>
         </div>

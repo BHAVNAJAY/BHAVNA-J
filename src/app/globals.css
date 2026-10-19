@@ -243,13 +243,13 @@ section[id] {
 }
 
 .starfield::before {
-  background-image: url("/stars/stars-a.svg");
+  background-image: var(--stars-a, url("/stars/stars-a.svg"));
   opacity: 0.55;
   animation: star-twinkle-a 7s ease-in-out infinite;
 }
 
 .starfield::after {
-  background-image: url("/stars/stars-b.svg");
+  background-image: var(--stars-b, url("/stars/stars-b.svg"));
   background-position: 330px 210px;
   opacity: 0.8;
   animation: star-twinkle-b 5s ease-in-out infinite;

@@ -6,6 +6,7 @@ import { ArrowUpRight, X } from "lucide-react";
 import { GithubIcon } from "./BrandIcons";
 import { projects, type Project } from "@/data/projects";
 import { ProjectCover } from "./ProjectCard";
+import { withBase } from "@/lib/base";
 import styles from "@/styles/projects.module.css";
 
 const SECTIONS: { key: keyof NonNullable<Project["caseStudy"]>; label: string }[] = [
@@ -99,7 +100,7 @@ export default function CaseStudy({ project, onClose }: { project: Project | nul
               <div className={styles.shots}>
                 {cs.screenshots.map((sh) => (
                   <div key={sh.src} className={styles.shot}>
-                    <Image src={sh.src} alt={sh.alt} fill sizes="(max-width: 900px) 90vw, 45vw" style={{ objectFit: "cover" }} loading="lazy" />
+                    <Image src={withBase(sh.src)} alt={sh.alt} fill sizes="(max-width: 900px) 90vw, 45vw" style={{ objectFit: "cover" }} loading="lazy" />
                   </div>
                 ))}
               </div>

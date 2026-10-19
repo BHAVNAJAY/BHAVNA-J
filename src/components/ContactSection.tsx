@@ -1,5 +1,6 @@
 import { ArrowUpRight, Download, FileText, Mail } from "lucide-react";
 import { contact, resume } from "@/data/portfolio";
+import { withBase } from "@/lib/base";
 import { LinkedinIcon } from "./BrandIcons";
 import Reveal from "./Reveal";
 import styles from "@/styles/sections.module.css";
@@ -30,7 +31,7 @@ export default function ContactSection({ resumeAvailable }: { resumeAvailable: b
       icon: <FileText size={22} strokeWidth={1.5} aria-hidden />,
       label: "Resume",
       sub: resumeOk === false ? "Coming soon" : "View or download my resume",
-      href: resumeOk === false ? undefined : resume.path,
+      href: resumeOk === false ? undefined : withBase(resume.path),
       external: true,
       indicator: <Download size={18} aria-hidden />,
     },

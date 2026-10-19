@@ -7,6 +7,7 @@ import { useGLTF } from "@react-three/drei";
 import { clone as cloneSkinned } from "three/examples/jsm/utils/SkeletonUtils.js";
 import type { MotionValue } from "motion/react";
 import { walkerModel } from "@/data/experience";
+import { withBase } from "@/lib/base";
 
 /**
  * Your own Blender model (exported as .glb), walking down the timeline.
@@ -47,7 +48,7 @@ function listFromConfig(v: string) {
 }
 
 export default function ModelWoman({ y, facingRef, reduced }: Props) {
-  const { scene, animations } = useGLTF(walkerModel.src);
+  const { scene, animations } = useGLTF(withBase(walkerModel.src));
 
   const rig = useMemo(() => {
     const model = cloneSkinned(scene) as THREE.Object3D;

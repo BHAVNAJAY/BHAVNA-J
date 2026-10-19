@@ -3,6 +3,7 @@
 import { useCallback, useRef } from "react";
 import HTMLFlipBook from "react-pageflip";
 import type { Page } from "@/data/achievements";
+import { withBase } from "@/lib/base";
 import styles from "@/styles/achievements.module.css";
 
 export type FlipApi = {
@@ -99,7 +100,7 @@ export default function FlipbookBook({
     >
       {pages.map((page, index) => (
         <div key={`${page.src}-${index}`} className={styles.page}>
-          <img src={page.src} alt={page.alt} draggable={false} />
+          <img src={withBase(page.src)} alt={page.alt} draggable={false} />
           <span
             className={styles.gutterShade}
             data-side={index % 2 === 1 ? "right" : "left"}

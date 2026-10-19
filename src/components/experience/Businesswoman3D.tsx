@@ -5,6 +5,7 @@ import * as THREE from "three";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import type { MotionValue } from "motion/react";
 import { walkerModel } from "@/data/experience";
+import { withBase } from "@/lib/base";
 import ModelWoman from "./ModelWoman";
 
 /** If the .glb fails to load, quietly show the built-in figure instead. */
@@ -311,7 +312,7 @@ export default function Businesswoman3D({ y, facingRef, active, reduced }: Props
   useEffect(() => {
     if (!walkerModel.src) return;
     let alive = true;
-    fetch(walkerModel.src, { method: "HEAD" })
+    fetch(withBase(walkerModel.src), { method: "HEAD" })
       .then((r) => alive && setMode(r.ok ? "model" : "builtin"))
       .catch(() => alive && setMode("builtin"));
     return () => {

@@ -2,6 +2,7 @@
 
 import { forwardRef } from "react";
 import { badge } from "@/data/portfolio";
+import { withBase } from "@/lib/base";
 import type { Face } from "./types";
 import styles from "@/styles/hero.module.css";
 
@@ -29,7 +30,7 @@ const BadgeFallback = forwardRef<HTMLButtonElement, { face: Face; onFlip: () => 
         <span className={styles.fallbackInner}>
           <span className={styles.fallbackFront}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={badge.portrait} alt="" />
+            <img src={withBase(badge.portrait)} alt="" />
             <strong className="display">{f.name}</strong>
             <span>{f.title}</span>
           </span>

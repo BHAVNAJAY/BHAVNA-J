@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { useReducedMotion } from "motion/react";
 import { achievements } from "@/data/achievements";
+import { withBase } from "@/lib/base";
 import type { FlipApi } from "./FlipbookBook";
 import Reveal from "./Reveal";
 import styles from "@/styles/achievements.module.css";
@@ -90,7 +91,7 @@ export default function AchievementsFlipbook() {
     const img = new Image();
     img.onload = () => finish(img.naturalWidth / img.naturalHeight);
     img.onerror = () => finish(achievements.pageAspect);
-    img.src = achievements.pages[0]?.src ?? "";
+    img.src = withBase(achievements.pages[0]?.src ?? "");
     const t = window.setTimeout(() => finish(achievements.pageAspect), 2500);
     return () => {
       done = true;

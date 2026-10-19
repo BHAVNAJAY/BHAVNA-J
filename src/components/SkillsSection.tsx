@@ -19,6 +19,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { skills } from "@/data/portfolio";
+import { withBase } from "@/lib/base";
 import Reveal from "./Reveal";
 import styles from "@/styles/sections.module.css";
 
@@ -76,7 +77,7 @@ export default function SkillsSection() {
                       <li key={it.name}>
                         {it.logo ? (
                           // eslint-disable-next-line @next/next/no-img-element
-                          <img src={it.logo} alt="" width={18} height={18} loading="lazy" className={styles.chipLogo} />
+                          <img src={withBase(it.logo)} alt="" width={18} height={18} loading="lazy" className={styles.chipLogo} />
                         ) : Icon ? (
                           <Icon size={16} strokeWidth={1.7} aria-hidden className={styles.chipIcon} />
                         ) : null}
