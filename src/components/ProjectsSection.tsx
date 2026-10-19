@@ -12,10 +12,10 @@ import styles from "@/styles/projects.module.css";
 const useIsoLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 /**
- * Desktop (≥ 900px, motion allowed): the section is pinned and vertical
+ * Motion allowed (desktop and phones): the section is pinned and vertical
  * scroll drives the card track horizontally — the section is exactly as
  * tall as the horizontal distance, so speed feels 1:1 and nothing jumps.
- * Mobile / reduced motion: a native, swipeable scroll-snap carousel.
+ * Reduced motion: a native, swipeable scroll-snap carousel.
  */
 export default function ProjectsSection() {
   const reduced = useReducedMotion();
@@ -27,12 +27,9 @@ export default function ProjectsSection() {
   const [open, setOpen] = useState<Project | null>(null);
   const lastTrigger = useRef<HTMLElement | null>(null);
 
+  // pinned on every screen size (phones included); reduced-motion visitors get the plain swipe carousel
   useIsoLayoutEffect(() => {
-    const mq = window.matchMedia("(min-width: 900px)");
-    const update = () => setPinned(mq.matches && !reduced);
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
+    setPinned(!reduced);
   }, [reduced]);
 
   // measure the track so the pinned height maps scroll → translateX exactly
@@ -48,7 +45,12 @@ export default function ProjectsSection() {
         const el = c as HTMLElement;
         return el.offsetLeft + el.offsetWidth / 2;
       });
-      setDims({ distance, vw, vh, centers });
+      // phone browsers resize the window as the address bar slides away — keep the first height
+      // unless the change is a real one (rotation / desktop resize), so the section never jitters
+      setDims((d) => {
+        const keepVh = d.vw === vw && d.vh > 1 && Math.abs(d.vh - vh) < 160;
+        return { distance, vw, vh: keepVh ? d.vh : vh, centers };
+      });
     };
     measure();
     const ro = new ResizeObserver(measure);

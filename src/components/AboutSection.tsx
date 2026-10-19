@@ -16,13 +16,15 @@ export default function AboutSection() {
 
   return (
     <section id="about" className={`section ${styles.about}`} aria-labelledby="about-heading">
+      <div className={`container ${styles.aboutHead}`}>
+        <Reveal>
+          <h2 id="about-heading" className={`${styles.aboutTitle} display`}>
+            {about.title}
+          </h2>
+        </Reveal>
+      </div>
       <div className={`container ${styles.aboutGrid}`} ref={ref}>
         <div className={styles.aboutLeft}>
-          <Reveal>
-            <h2 id="about-heading" className={`${styles.aboutTitle} display`}>
-              {about.title}
-            </h2>
-          </Reveal>
           <Reveal className={styles.aboutPhotoWrap}>
             <motion.div className={styles.aboutPhoto} style={{ y: photoY }}>
               <Image src={about.photo} alt={about.photoAlt} fill priority sizes="(max-width: 860px) 90vw, 40vw" style={{ objectFit: "cover", objectPosition: "50% 45%" }} />

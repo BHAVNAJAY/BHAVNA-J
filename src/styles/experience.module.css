@@ -52,7 +52,7 @@
 
 .title {
   margin: 0;
-  font-size: clamp(40px, 7vw, 100px);
+  font-size: var(--heading-size);
   color: var(--exp-ink);
 }
 

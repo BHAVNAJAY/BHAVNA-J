@@ -479,6 +479,84 @@ export default function AchievementsFlipbook() {
     };
   }, [geometry, stepBy, syncFromScroll, mirrored]);
 
+  /* ── touch: native scrolling that turns exactly one page per swipe ───────────────
+     Phones never lock the page. While the corridor is on screen the page gets
+     "scroll-snap-type: y mandatory" (every page slot, plus the exit below the book, is a
+     snap point), so scrolling always settles on a page. */
+  useEffect(() => {
+    if (!window.matchMedia("(pointer: coarse)").matches) return;
+    const html = document.documentElement;
+    let on = false;
+    const update = () => {
+      const g = geometry();
+      const c = corridorRef.current;
+      if (!g || !c) return;
+      const bottom = g.top + c.offsetHeight;
+      const y = window.scrollY;
+      const want = y >= g.top - 1 && y < bottom - 1;
+      if (want !== on) {
+        on = want;
+        html.style.scrollSnapType = want ? "y mandatory" : "";
+      }
+    };
+    update();
+
+    /* One swipe = one page. A swipe (and the momentum after it) may carry the page at most
+       one slot away from where it started; from the first/last page the far side stays open,
+       so the next swipe always leaves the section. Nothing is ever locked or cancelled. */
+    let lo = -Infinity;
+    let hi = Infinity;
+    let touching = false;
+    let until = 0;
+    const slot = (g: { top: number; step: number }, i: number) => g.top + i * g.step;
+    const onStart = (e: TouchEvent) => {
+      const g = geometry();
+      if (!g || g.step <= 0) return;
+      touching = e.touches.length === 1;
+      const n = k.current.states;
+      const y = window.scrollY;
+      if (y < slot(g, 0) - 2) {
+        lo = -Infinity; // arriving from above: stop on the first page
+        hi = slot(g, 0);
+      } else if (y > slot(g, n - 1) + 2) {
+        lo = slot(g, n - 1); // arriving from below: stop on the last page
+        hi = Infinity;
+      } else {
+        const s = Math.max(0, Math.min(n - 1, Math.round((y - g.top) / g.step)));
+        lo = s > 0 ? slot(g, s - 1) : -Infinity;
+        hi = s < n - 1 ? slot(g, s + 1) : Infinity;
+      }
+    };
+    const onEnd = () => {
+      touching = false;
+      until = performance.now() + 1600; // keep limiting while the swipe's momentum runs out
+    };
+    const clamp = () => {
+      if (!touching && performance.now() > until) return;
+      const y = window.scrollY;
+      if (y > hi + 0.5) window.scrollTo({ top: hi, behavior: "instant" as ScrollBehavior });
+      else if (y < lo - 0.5) window.scrollTo({ top: lo, behavior: "instant" as ScrollBehavior });
+    };
+
+    const onScroll = () => {
+      clamp();
+      update();
+    };
+    window.addEventListener("touchstart", onStart, { passive: true });
+    window.addEventListener("touchend", onEnd, { passive: true });
+    window.addEventListener("touchcancel", onEnd, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("touchstart", onStart);
+      window.removeEventListener("touchend", onEnd);
+      window.removeEventListener("touchcancel", onEnd);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", update);
+      html.style.scrollSnapType = "";
+    };
+  }, [geometry]);
+
   /* ── presentation ────────────────────────────────────────────────────── */
   const page = stateToPage(uiState, single);
   const label = !single && page > 0 && page < total - 1 ? `${page + 1}–${Math.min(page + 2, total)}` : `${page + 1}`;
@@ -499,6 +577,10 @@ export default function AchievementsFlipbook() {
         className={styles.scrollCorridor}
         style={{ "--states": states, "--step": `${STEP_VH}svh` } as React.CSSProperties}
       >
+        {Array.from({ length: states }, (_, i) => (
+          <span key={i} className={styles.snapPoint} style={{ top: `calc(${i} * var(--step))` }} aria-hidden />
+        ))}
+        <span className={styles.snapPoint} style={{ bottom: 0 }} aria-hidden />
         <div ref={stickyRef} className={styles.stickyViewport}>
           <div className={styles.head}>
             <Reveal>

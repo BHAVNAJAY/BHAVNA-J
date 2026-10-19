@@ -7,11 +7,11 @@
      The open book is as tall as the free space under the title, and
      twice a page wide — so its size is set by how much room the title
      leaves. A smaller title (or tighter gaps) = a bigger book.
-       --title-size : heading size. Lower the svh part (e.g. 8svh) for a bigger book.
+       --title-size : heading size (shared --heading-size from globals.css). A smaller title = a bigger book.
        --book-gap   : space between the subtitle and the book.
        --head-gap   : space between the title and the subtitle.
        --book-pad   : space kept free under the book. */
-  --title-size: min(clamp(40px, 7vw, 100px), 9svh);
+  --title-size: var(--heading-size);
   --book-gap: clamp(6px, 1.2svh, 14px);
   --head-gap: 4px;
   --book-pad: 4px;
@@ -22,6 +22,17 @@
 .scrollCorridor {
   position: relative;
   height: calc(100svh + (var(--states) - 1) * var(--step));
+}
+
+/* invisible snap targets, one per page slot (phones only use them — see the flipbook component) */
+.snapPoint {
+  position: absolute;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
 /* Full-screen stage that stays pinned while the pages turn.
@@ -257,9 +268,6 @@
   }
   .head {
     gap: 2px;
-  }
-  .head .title {
-    font-size: clamp(30px, 9vw, 52px);
   }
   .footerRow {
     position: static;

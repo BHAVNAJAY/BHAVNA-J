@@ -9,7 +9,7 @@
 
 export const site = {
   name: "Bhavna Jayakumar",
-  shortName: "Bhavna J.",
+  shortName: "Bhavna J",
   description:
     "Portfolio of Bhavna Jayakumar — Computer Science (AI & ML) student, full-stack developer, UI/UX and graphic designer, and digital marketer.",
 };

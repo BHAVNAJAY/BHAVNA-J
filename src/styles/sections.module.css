@@ -31,17 +31,18 @@
   align-items: center;
 }
 
-.aboutLeft {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(20px, 3vw, 36px);
+/* title sits on its own row above the photo, so it can stay big on a single line */
+.aboutHead {
+  text-align: center;
+  margin-bottom: clamp(24px, 3.4vw, 48px);
 }
 
 /* same type as the other section titles, sized to the photo column */
 .aboutTitle {
   margin: 0;
   color: #000;
-  font-size: clamp(44px, 5.6vw, 88px);
+  font-size: var(--heading-size);
+  white-space: nowrap;
   line-height: 1;
 }
 
@@ -103,7 +104,9 @@
 .facts {
   margin: 18px 0 0;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, auto);
+  justify-content: start;
+  column-gap: clamp(28px, 4vw, 56px);
   border-top: 1px solid rgba(0, 0, 0, 0.2);
 }
 
@@ -121,6 +124,7 @@
 
 .facts dd {
   margin: 6px 0 0;
+  white-space: nowrap;
   font-size: 15px;
   color: #000;
 }
@@ -237,7 +241,8 @@
 
 .contactTitle {
   margin: 0;
-  font-size: clamp(44px, 8vw, 112px);
+  text-align: center;
+  font-size: var(--heading-size);
 }
 
 .contactTitle::after {
@@ -253,6 +258,7 @@
 
 .contactSub {
   margin: 14px 0 clamp(36px, 5vw, 56px);
+  text-align: center;
   font-size: clamp(20px, 2.2vw, 28px);
   color: var(--lavender);
 }

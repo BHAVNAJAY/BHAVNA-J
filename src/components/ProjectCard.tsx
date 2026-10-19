@@ -10,15 +10,20 @@ import styles from "@/styles/projects.module.css";
 /** Typographic cover used until a real screenshot is added for the project. */
 export function ProjectCover({ project, index }: { project: Project; index: number }) {
   if (project.thumbnail) {
+    // On phones the card is a tall poster: the full landscape artwork sits in the middle (nothing cropped)
+    // over a blurred copy of itself that fills the rest. On desktop the artwork simply covers the card.
     return (
-      <Image
-        src={project.thumbnail}
-        alt={`${project.title} cover`}
-        fill
-        sizes="(max-width: 900px) 85vw, 50vw"
-        style={{ objectFit: "cover" }}
-        loading="lazy"
-      />
+      <>
+        <Image src={project.thumbnail} alt="" aria-hidden fill sizes="40vw" className={styles.thumbBg} loading="lazy" />
+        <Image
+          src={project.thumbnail}
+          alt={`${project.title} cover`}
+          fill
+          sizes="(max-width: 900px) 85vw, 50vw"
+          className={styles.thumbFg}
+          loading="lazy"
+        />
+      </>
     );
   }
   const h = project.hue;
