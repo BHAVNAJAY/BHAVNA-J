@@ -145,17 +145,6 @@ export const skills = {
         { name: "OpenAI API", icon: "bot" },
       ] as Skill[],
     },
-    {
-      title: "Marketing & Growth",
-      icon: "chart" as const,
-      items: [
-        { name: "Digital Marketing" },
-        { name: "Social Media Marketing" },
-        { name: "A/B Testing" },
-        { name: "Engagement Analysis" },
-        { name: "Brand Communication" },
-      ] as Skill[],
-    },
   ],
 };
 

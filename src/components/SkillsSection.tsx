@@ -58,7 +58,8 @@ export default function SkillsSection() {
           </Reveal>
         </div>
 
-        <div className={styles.skillCols}>
+        <div className={styles.skillsStage}>
+          <div className={styles.skillCols}>
           {skills.groups.map((g, gi) => {
             const GroupIcon = GROUP_ICONS[g.icon];
             return (
@@ -87,6 +88,7 @@ export default function SkillsSection() {
               </Reveal>
             );
           })}
+          </div>
         </div>
       </div>
     </section>
