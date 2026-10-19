@@ -1,4 +1,4 @@
-# Bhavna J. — Cinematic 3D Portfolio
+# Bhavna J- My Portfolio
 
 Next.js (App Router) · React 19 · TypeScript · Three.js / React Three Fiber / Drei · Motion for React · react-pageflip · Lucide.
 
