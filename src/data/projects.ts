@@ -24,6 +24,15 @@ export type Project = {
   repoUrl?: string;
   /** Clicking the card opens this URL. */
   externalUrl?: string;
+  /** Optional long-form write-up shown in the case-study dialog (only used when no externalUrl is set). */
+  caseStudy?: {
+    problem?: string;
+    solution?: string;
+    contribution?: string;
+    process?: string;
+    results?: string;
+    screenshots?: { src: string; alt: string }[];
+  };
 };
 
 export const projects: Project[] = [
