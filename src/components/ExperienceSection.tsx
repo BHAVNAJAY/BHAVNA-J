@@ -148,7 +148,10 @@ export default function ExperienceSection() {
   });
 
   const walkerY = useTransform(pos, (v) => v - walkerH * 0.5);
-  const fillH = useTransform(pos, (v) => Math.max(0, v));
+  // On phones the line runs from the first dot to the last (no stub above the first dot),
+  // so she starts at the very beginning of the line.
+  const lineTop = stacked && nodes.length ? nodes[0] : 0;
+  const fillH = useTransform(pos, (v) => Math.max(0, v - lineTop));
 
   return (
     <section id="experience" className={styles.section} aria-labelledby="exp-title">
@@ -163,7 +166,7 @@ export default function ExperienceSection() {
 
         <div className={styles.timeline} ref={timelineRef} style={{ "--line-h": `${lineH}px` } as React.CSSProperties}>
           {/* the line, filling in black as she walks down it */}
-          <div className={styles.line} style={nodes.length ? { height: nodes[nodes.length - 1], bottom: "auto" } : undefined} aria-hidden>
+          <div className={styles.line} style={nodes.length ? { top: lineTop, height: nodes[nodes.length - 1] - lineTop, bottom: "auto" } : undefined} aria-hidden>
             <motion.div className={styles.lineFill} style={{ height: fillH }} />
           </div>
 

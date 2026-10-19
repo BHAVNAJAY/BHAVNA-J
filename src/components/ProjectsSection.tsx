@@ -27,10 +27,12 @@ export default function ProjectsSection() {
   const [open, setOpen] = useState<Project | null>(null);
   const lastTrigger = useRef<HTMLElement | null>(null);
 
-  // pinned on every screen size (phones included); reduced-motion visitors get the plain swipe carousel
+  // Pinned on every screen size, phones included. The sideways slide is driven directly by the
+  // visitor's own scrolling (it never plays on its own), so it stays on even when the phone is in a
+  // battery-saver / "reduce motion" mode — those settings otherwise swapped it for a plain carousel.
   useIsoLayoutEffect(() => {
-    setPinned(!reduced);
-  }, [reduced]);
+    setPinned(true);
+  }, []);
 
   // measure the track so the pinned height maps scroll → translateX exactly
   useEffect(() => {

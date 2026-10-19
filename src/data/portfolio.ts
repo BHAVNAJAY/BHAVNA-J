@@ -173,8 +173,7 @@ export const contact = {
   heading: "Find me here.",
   subtitle: "Have an idea? Let's make something meaningful.",
   email: "bhavnajayakumar@gmail.com",
-  /** Paste your LinkedIn profile URL here, e.g. "https://www.linkedin.com/in/your-handle". Empty = shown as "coming soon". */
-  linkedin: "",
+  linkedin: "https://www.linkedin.com/in/bhavna-jayakumar-934057284/",
   footer: "Designed & built by Bhavna J.",
 };
 

@@ -1,7 +1,7 @@
 /* ── Design tokens ─────────────────────────────────────────── */
 :root {
   /* one size for every section title (About, Skills, Experience, Projects, Achievements, Contact) */
-  --heading-size: clamp(34px, 4.4vw, 64px);
+  --heading-size: clamp(39px, calc(4.4vw + 5px), 69px);
   --black: #090910;
   --charcoal: #111018;
   --charcoal-2: #17151f;

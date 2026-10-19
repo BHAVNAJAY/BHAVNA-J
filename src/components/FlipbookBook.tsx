@@ -67,7 +67,10 @@ export default function FlipbookBook({
       width={600}
       height={Math.round(600 / aspect)}
       size="stretch"
-      minWidth={160}
+      // The library only switches to its one-page layout when the block is narrower than 2 × minWidth.
+      // On phones (portrait) that needs a large minWidth, otherwise a 374px-wide book still shows a tiny
+      // two-page spread and the page counter drifts out of step with what is on screen.
+      minWidth={portrait ? 400 : 160}
       maxWidth={1600}
       minHeight={220}
       maxHeight={2000}
@@ -84,7 +87,10 @@ export default function FlipbookBook({
       useMouseEvents={false}
       swipeDistance={30}
       showPageCorners={false}
-      disableFlipByClick
+      // false: the library only rejects programmatic turns outside its page-corner zones when this is on,
+      // and in one-page mode the "turn back" start point sits outside them (no back-turn animation).
+      // Mouse/touch handling is off (useMouseEvents={false}), so nothing can flip by tapping.
+      disableFlipByClick={false}
       onInit={handleInit}
       onFlip={(event: { data: number }) => onFlip(event.data)}
       onChangeState={(event: { data: string }) => {

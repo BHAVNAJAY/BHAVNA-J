@@ -345,6 +345,11 @@ export default function AchievementsFlipbook() {
     /* Touch (phones / tablets): one swipe = one page. */
     const touch = { active: false, startY: 0, fired: false, exiting: false };
     const onTouchStart = (e: TouchEvent) => {
+      // touches on the menu / header belong to the menu, never to the book
+      if ((e.target as Element | null)?.closest?.("header")) {
+        touch.active = false;
+        return;
+      }
       lastInput = now();
       touch.active = e.touches.length === 1;
       touch.fired = false;
@@ -352,7 +357,13 @@ export default function AchievementsFlipbook() {
       if (touch.active) touch.startY = e.touches[0].clientY;
     };
     const onTouchMove = (e: TouchEvent) => {
-      if (!touch.active || touch.exiting || e.touches.length !== 1) return;
+      if (!touch.active || e.touches.length !== 1) return;
+      // the swipe that is leaving the section is carried out by the script below —
+      // keep the browser from also scrolling, so it never moves twice
+      if (touch.exiting) {
+        if (e.cancelable) e.preventDefault();
+        return;
+      }
       lastInput = now();
       const g = geometry();
       if (!g) return;
@@ -365,8 +376,13 @@ export default function AchievementsFlipbook() {
       if (dy === 0) return;
       const dir = dy > 0 ? 1 : -1;
       if (atEdge(dir) && !touch.fired) {
-        touch.exiting = true; // let this swipe scroll out of the section
-        release();
+        if (e.cancelable) e.preventDefault();
+        if (Math.abs(dy) < 14) return; // ignore finger jitter
+        // Past the last (or first) page: hand the page back and carry this swipe on to the next section.
+        // Stepping a few px off the book first stops the next touch from catching it again.
+        touch.exiting = true;
+        release(dir * (TOL + 3));
+        window.scrollBy({ top: dir * Math.round(window.innerHeight * 0.75), behavior: "smooth" });
         return;
       }
       if (e.cancelable) e.preventDefault();
@@ -451,21 +467,25 @@ export default function AchievementsFlipbook() {
       if (trapped && g) parkOnTarget(g);
     };
 
-    // Phones / tablets (coarse pointer) never trap the scroll: the page scrolls natively and
-    // the book simply follows it through the corridor (see syncFromScroll), so a swipe can
-    // always carry on to the next section. Only mice, touchpads and keys pin the book.
-    const coarse = window.matchMedia("(pointer: coarse)").matches;
+    /* Menu / in-page links (#section): let go of the book first, so the jump isn't pulled back to it. */
+    const onLinkClick = (e: MouseEvent) => {
+      const a = (e.target as Element | null)?.closest?.('a[href^="#"]');
+      if (!a) return;
+      lastInput = -1e9;
+      lastStep = -1e9;
+      release();
+    };
+    window.addEventListener("click", onLinkClick, true);
     window.addEventListener("wheel", onWheel, { passive: false });
-    if (!coarse) {
-      window.addEventListener("touchstart", onTouchStart, { passive: true });
-      window.addEventListener("touchmove", onTouchMove, { passive: false });
-      window.addEventListener("touchend", onTouchEnd, { passive: true });
-      window.addEventListener("touchcancel", onTouchEnd, { passive: true });
-    }
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+    window.addEventListener("touchend", onTouchEnd, { passive: true });
+    window.addEventListener("touchcancel", onTouchEnd, { passive: true });
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("keydown", onKey);
     window.addEventListener("resize", onResize);
     return () => {
+      window.removeEventListener("click", onLinkClick, true);
       window.removeEventListener("wheel", onWheel);
       window.removeEventListener("touchstart", onTouchStart);
       window.removeEventListener("touchmove", onTouchMove);
@@ -478,84 +498,6 @@ export default function AchievementsFlipbook() {
       window.clearTimeout(k.current.safety);
     };
   }, [geometry, stepBy, syncFromScroll, mirrored]);
-
-  /* ── touch: native scrolling that turns exactly one page per swipe ───────────────
-     Phones never lock the page. While the corridor is on screen the page gets
-     "scroll-snap-type: y mandatory" (every page slot, plus the exit below the book, is a
-     snap point), so scrolling always settles on a page. */
-  useEffect(() => {
-    if (!window.matchMedia("(pointer: coarse)").matches) return;
-    const html = document.documentElement;
-    let on = false;
-    const update = () => {
-      const g = geometry();
-      const c = corridorRef.current;
-      if (!g || !c) return;
-      const bottom = g.top + c.offsetHeight;
-      const y = window.scrollY;
-      const want = y >= g.top - 1 && y < bottom - 1;
-      if (want !== on) {
-        on = want;
-        html.style.scrollSnapType = want ? "y mandatory" : "";
-      }
-    };
-    update();
-
-    /* One swipe = one page. A swipe (and the momentum after it) may carry the page at most
-       one slot away from where it started; from the first/last page the far side stays open,
-       so the next swipe always leaves the section. Nothing is ever locked or cancelled. */
-    let lo = -Infinity;
-    let hi = Infinity;
-    let touching = false;
-    let until = 0;
-    const slot = (g: { top: number; step: number }, i: number) => g.top + i * g.step;
-    const onStart = (e: TouchEvent) => {
-      const g = geometry();
-      if (!g || g.step <= 0) return;
-      touching = e.touches.length === 1;
-      const n = k.current.states;
-      const y = window.scrollY;
-      if (y < slot(g, 0) - 2) {
-        lo = -Infinity; // arriving from above: stop on the first page
-        hi = slot(g, 0);
-      } else if (y > slot(g, n - 1) + 2) {
-        lo = slot(g, n - 1); // arriving from below: stop on the last page
-        hi = Infinity;
-      } else {
-        const s = Math.max(0, Math.min(n - 1, Math.round((y - g.top) / g.step)));
-        lo = s > 0 ? slot(g, s - 1) : -Infinity;
-        hi = s < n - 1 ? slot(g, s + 1) : Infinity;
-      }
-    };
-    const onEnd = () => {
-      touching = false;
-      until = performance.now() + 1600; // keep limiting while the swipe's momentum runs out
-    };
-    const clamp = () => {
-      if (!touching && performance.now() > until) return;
-      const y = window.scrollY;
-      if (y > hi + 0.5) window.scrollTo({ top: hi, behavior: "instant" as ScrollBehavior });
-      else if (y < lo - 0.5) window.scrollTo({ top: lo, behavior: "instant" as ScrollBehavior });
-    };
-
-    const onScroll = () => {
-      clamp();
-      update();
-    };
-    window.addEventListener("touchstart", onStart, { passive: true });
-    window.addEventListener("touchend", onEnd, { passive: true });
-    window.addEventListener("touchcancel", onEnd, { passive: true });
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", update);
-    return () => {
-      window.removeEventListener("touchstart", onStart);
-      window.removeEventListener("touchend", onEnd);
-      window.removeEventListener("touchcancel", onEnd);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", update);
-      html.style.scrollSnapType = "";
-    };
-  }, [geometry]);
 
   /* ── presentation ────────────────────────────────────────────────────── */
   const page = stateToPage(uiState, single);
@@ -577,10 +519,6 @@ export default function AchievementsFlipbook() {
         className={styles.scrollCorridor}
         style={{ "--states": states, "--step": `${STEP_VH}svh` } as React.CSSProperties}
       >
-        {Array.from({ length: states }, (_, i) => (
-          <span key={i} className={styles.snapPoint} style={{ top: `calc(${i} * var(--step))` }} aria-hidden />
-        ))}
-        <span className={styles.snapPoint} style={{ bottom: 0 }} aria-hidden />
         <div ref={stickyRef} className={styles.stickyViewport}>
           <div className={styles.head}>
             <Reveal>
