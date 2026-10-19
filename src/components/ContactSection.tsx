@@ -37,7 +37,7 @@ export default function ContactSection({ resumeAvailable }: { resumeAvailable: b
   ];
 
   return (
-    <section id="contact" className={`section ${styles.contact}`} aria-labelledby="contact-title">
+    <section id="contact" className={`section starfield ${styles.contact}`} aria-labelledby="contact-title">
       <div className={`container ${styles.contactInner}`}>
         <Reveal>
           <h2 id="contact-title" className={`${styles.contactTitle} display`}>

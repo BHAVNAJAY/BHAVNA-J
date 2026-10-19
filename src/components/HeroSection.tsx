@@ -135,7 +135,7 @@ export default function HeroSection() {
 
   return (
     <section id="home" ref={sectionRef} className={styles.hero} data-reduced={reduced || undefined} aria-label="Introduction">
-      <div className={styles.stage}>
+      <div className={`${styles.stage} starfield`}>
         <h1 className="visually-hidden">
           {site.name} — Portfolio
         </h1>

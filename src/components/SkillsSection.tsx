@@ -44,7 +44,7 @@ const SKILL_ICONS: Record<string, LucideIcon> = {
 
 export default function SkillsSection() {
   return (
-    <section id="skills" className={`section ${styles.skills}`} aria-labelledby="skills-title">
+    <section id="skills" className={`section starfield ${styles.skills}`} aria-labelledby="skills-title">
       <div className="container">
         <div className="section-head">
           <Reveal delay={0.05}>

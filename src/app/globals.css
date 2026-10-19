@@ -219,3 +219,51 @@ section[id] {
   opacity: 0.4;
   pointer-events: none;
 }
+
+
+/* ── Starfield: tiny, slow-twinkling stars behind the dark sections ─────────
+   Add class "starfield" to any positioned, dark section. Two tiled layers drift
+   in and out of brightness at different speeds; the tiles live in /public/stars. */
+.starfield {
+  isolation: isolate;
+}
+
+.starfield::before,
+.starfield::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-repeat: repeat;
+}
+
+.starfield::before {
+  background-image: url("/stars/stars-a.svg");
+  opacity: 0.55;
+  animation: star-twinkle-a 7s ease-in-out infinite;
+}
+
+.starfield::after {
+  background-image: url("/stars/stars-b.svg");
+  background-position: 330px 210px;
+  opacity: 0.8;
+  animation: star-twinkle-b 5s ease-in-out infinite;
+}
+
+@keyframes star-twinkle-a {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes star-twinkle-b {
+  0%, 100% { opacity: 0.9; }
+  50% { opacity: 0.4; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .starfield::before,
+  .starfield::after {
+    animation: none;
+  }
+}

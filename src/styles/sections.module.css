@@ -31,6 +31,20 @@
   align-items: center;
 }
 
+.aboutLeft {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 3vw, 36px);
+}
+
+/* same type as the other section titles, sized to the photo column */
+.aboutTitle {
+  margin: 0;
+  color: #000;
+  font-size: clamp(44px, 5.6vw, 88px);
+  line-height: 1;
+}
+
 .aboutPhotoWrap {
   position: relative;
 }
@@ -50,15 +64,6 @@
   inset: 14px;
   border: 1px solid rgba(217, 200, 242, 0.45);
   pointer-events: none;
-}
-
-.photoCaption {
-  position: absolute;
-  right: -12px;
-  bottom: -28px;
-  font-size: clamp(40px, 5vw, 72px);
-  color: #a0334f;
-  line-height: 1;
 }
 
 .aboutText {
@@ -86,6 +91,13 @@
 
 .aboutPara:first-of-type {
   color: #000;
+}
+
+.signoff {
+  margin: 4px 0 0;
+  font-size: clamp(18px, 1.7vw, 24px);
+  letter-spacing: 0.04em;
+  color: #a0334f;
 }
 
 .facts {
@@ -119,9 +131,6 @@
   }
   .aboutPhotoWrap {
     max-width: 420px;
-  }
-  .photoCaption {
-    right: 8px;
   }
   .facts {
     grid-template-columns: 1fr;
@@ -324,6 +333,7 @@
 
 /* ── Footer ──────────────────────────────────────── */
 .footer {
+  position: relative;
   background: var(--black);
   padding: 40px 0 48px;
 }

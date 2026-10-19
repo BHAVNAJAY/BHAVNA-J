@@ -61,21 +61,22 @@ export const heroRoles: { text: string; position: "tl" | "tr" | "bl" | "br"; acc
 /* ── About ─────────────────────────────────────────────────── */
 
 export const about = {
-  eyebrow: "About me",
-  heading: "Design, code and the story that sells them.",
-  photo: "/images/portrait.jpg",
+  title: "About Me",
+  heading: "Logic Runs from A to Z, Creativity Knows No Limits.",
+  photo: "/images/about.png",
+  signoff: "- BHAVNA JAYAKUMAR",
   photoAlt: "Portrait of Bhavna Jayakumar",
   /**
    * Short biography. Written only from the facts you supplied —
    * rewrite in your own voice whenever you like (one string per paragraph).
    */
   paragraphs: [
-    "I'm Bhavna Jayakumar, a Computer Science student specialising in Artificial Intelligence and Machine Learning.",
-    "I work across three disciplines — design, development and digital marketing — building full-stack products, designing interfaces and graphics, and shaping how those products reach people.",
-    "Alongside the work itself, I lead creative teams and collaborate on student projects, where I enjoy turning ideas into meaningful digital experiences.",
+    "Hey, I'm a Computer Science Engineering student specialising in AI & Machine Learning, with a love for development, AI, and design.",
+    "I enjoy building things from scratch, developing web applications, experimenting with AI-powered solutions, and designing interfaces that are intuitive and visually engaging.",
+    "Beyond coding and designing, I enjoy collaborating with people, sharing ideas, and taking on challenges that push me to learn something new. I'm always exploring, creating, and finding better ways to turn ideas into reality.",
   ],
   facts: [
-    { label: "Studying", value: "Computer Science — AI & ML" },
+    { label: "Studying", value: "Computer Science - AI & ML" },
     { label: "Roles", value: "Developer, Designer, Facilitator" },
   ],
 };

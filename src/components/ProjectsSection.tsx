@@ -96,7 +96,7 @@ export default function ProjectsSection() {
     <section
       id="projects"
       ref={sectionRef}
-      className={styles.section}
+      className={`${styles.section} starfield`}
       data-pinned={pinned || undefined}
       aria-labelledby="projects-title"
       style={pinned && dims.distance ? { height: dims.distance + dims.vh } : undefined}

@@ -2,6 +2,19 @@
   position: relative;
   background: #f2d9e0;
   color: #000;
+
+  /* ── SIZE KNOBS ─────────────────────────────────────────────
+     The open book is as tall as the free space under the title, and
+     twice a page wide — so its size is set by how much room the title
+     leaves. A smaller title (or tighter gaps) = a bigger book.
+       --title-size : heading size. Lower the svh part (e.g. 8svh) for a bigger book.
+       --book-gap   : space between the subtitle and the book.
+       --head-gap   : space between the title and the subtitle.
+       --book-pad   : space kept free under the book. */
+  --title-size: min(clamp(40px, 7vw, 100px), 9svh);
+  --book-gap: clamp(6px, 1.2svh, 14px);
+  --head-gap: 4px;
+  --book-pad: 4px;
 }
 
 /* Tall corridor: one full screen + one "step" per page turn.
@@ -22,7 +35,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: calc(var(--nav-h) + 8px) clamp(8px, 1.5vw, 24px) 10px;
+  padding: calc(var(--nav-h) + 4px) clamp(8px, 1.5vw, 24px) var(--book-pad);
 }
 
 /* horizontal title above the book, same type as the other sections */
@@ -32,8 +45,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  margin-bottom: clamp(14px, 2.4svh, 26px);
+  gap: var(--head-gap);
+  margin-bottom: var(--book-gap);
   text-align: center;
   pointer-events: none;
 }
@@ -41,9 +54,9 @@
 /* .section-title / .display supply font, weight, stretch and case; capped so the book keeps its room */
 .head .title {
   margin: 0;
-  margin-top: 14px;
+  margin-top: 6px;
   color: #000;
-  font-size: min(clamp(40px, 7vw, 100px), 11svh);
+  font-size: var(--title-size);
 }
 
 .subtitle {

@@ -451,11 +451,17 @@ export default function AchievementsFlipbook() {
       if (trapped && g) parkOnTarget(g);
     };
 
+    // Phones / tablets (coarse pointer) never trap the scroll: the page scrolls natively and
+    // the book simply follows it through the corridor (see syncFromScroll), so a swipe can
+    // always carry on to the next section. Only mice, touchpads and keys pin the book.
+    const coarse = window.matchMedia("(pointer: coarse)").matches;
     window.addEventListener("wheel", onWheel, { passive: false });
-    window.addEventListener("touchstart", onTouchStart, { passive: true });
-    window.addEventListener("touchmove", onTouchMove, { passive: false });
-    window.addEventListener("touchend", onTouchEnd, { passive: true });
-    window.addEventListener("touchcancel", onTouchEnd, { passive: true });
+    if (!coarse) {
+      window.addEventListener("touchstart", onTouchStart, { passive: true });
+      window.addEventListener("touchmove", onTouchMove, { passive: false });
+      window.addEventListener("touchend", onTouchEnd, { passive: true });
+      window.addEventListener("touchcancel", onTouchEnd, { passive: true });
+    }
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("keydown", onKey);
     window.addEventListener("resize", onResize);
