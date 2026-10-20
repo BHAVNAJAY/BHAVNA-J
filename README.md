@@ -1,6 +1,6 @@
 # Bhavna J — Personal Portfolio
 
-A creative portfolio showcasing my journey across **Design, Development, Artificial Intelligence, and Digital Marketing.
+A creative portfolio showcasing my journey across Design, Development, Artificial Intelligence, and Digital Marketing.
 
 I'm Bhavna Jayakumar, a Computer Science Engineering student specializing in AI & Machine Learning. I enjoy transforming ideas into meaningful digital experiences by combining technical problem-solving with thoughtful design and creativity.
 
@@ -35,12 +35,12 @@ The 3D badge is created using Three.js and React Three Fiber, without Spline or 
 
 ## Explore
 
-- About Me — My background, interests, and professional journey
-- Skills — My capabilities across design, development, AI/ML, and digital marketing
-- Projects — Selected technical and creative projects
-- Achievements — Milestones and accomplishments presented through an interactive flipbook
-- Hobbies — Interests beyond technology
-- Resume & Contact — My professional profile and ways to connect
+- About Me: My background, interests, and professional journey
+- Skills: My capabilities across design, development, AI/ML, and digital marketing
+- Projects: Selected technical and creative projects
+- Achievements: Milestones and accomplishments presented through an interactive flipbook
+- Hobbies: Interests beyond technology
+- Resume & Contact: My professional profile and ways to connect
 
 ## Connect
 
