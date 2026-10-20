@@ -163,6 +163,7 @@ export const contact = {
   subtitle: "Have an idea? Let's make something meaningful.",
   email: "bhavnajayakumar@gmail.com",
   linkedin: "https://www.linkedin.com/in/bhavna-jayakumar-934057284/",
+  behance: "https://www.behance.net/bhavna-jayakumar",
   footer: "Designed & built by Bhavna J.",
 };
 

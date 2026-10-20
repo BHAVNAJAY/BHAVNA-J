@@ -1,7 +1,7 @@
 import { ArrowUpRight, Download, FileText, Mail } from "lucide-react";
 import { contact, resume } from "@/data/portfolio";
 import { withBase } from "@/lib/base";
-import { LinkedinIcon } from "./BrandIcons";
+import { BehanceIcon, LinkedinIcon } from "./BrandIcons";
 import Reveal from "./Reveal";
 import styles from "@/styles/sections.module.css";
 
@@ -23,6 +23,15 @@ export default function ContactSection({ resumeAvailable }: { resumeAvailable: b
       label: "LinkedIn",
       sub: contact.linkedin ? "Connect professionally" : "Profile link coming soon",
       href: contact.linkedin || undefined,
+      external: true,
+      indicator: <ArrowUpRight size={20} aria-hidden />,
+    },
+    {
+      key: "behance",
+      icon: <BehanceIcon size={22} />,
+      label: "Behance",
+      sub: contact.behance ? "See my design work" : "Portfolio link coming soon",
+      href: contact.behance || undefined,
       external: true,
       indicator: <ArrowUpRight size={20} aria-hidden />,
     },

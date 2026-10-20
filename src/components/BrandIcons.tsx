@@ -19,3 +19,15 @@ export function GithubIcon({ size = 20, className }: P) {
     </svg>
   );
 }
+
+export function BehanceIcon({ size = 20, className }: P) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden>
+      <path d="M2.5 6.5h5a2.75 2.75 0 0 1 0 5.5h-5z" />
+      <path d="M2.5 12h5.6a2.9 2.9 0 0 1 0 5.8H2.5z" />
+      <path d="M2.5 6.5v11.3" />
+      <path d="M14.5 6.5h6" />
+      <path d="M14 14.5h7.2a3.6 3.6 0 1 0-1 2.7" />
+    </svg>
+  );
+}
