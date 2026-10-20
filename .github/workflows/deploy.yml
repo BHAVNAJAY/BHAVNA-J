@@ -24,9 +24,14 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
+      # GitHub Pages serves static files only, so the chat API route (needs a server) is left out of this
+      # build. The chat widget instead calls the server set in the CHAT_API_URL repository variable.
+      - run: rm -rf src/app/api
       - run: npm run build
         env:
           NEXT_PUBLIC_BASE_PATH: /BHAVNA-J
+          NEXT_PUBLIC_STATIC_EXPORT: "1"
+          NEXT_PUBLIC_CHAT_API_URL: ${{ vars.CHAT_API_URL }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: out

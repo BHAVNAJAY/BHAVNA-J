@@ -6,6 +6,7 @@ import ProjectsSection from "@/components/ProjectsSection";
 import AchievementsFlipbook from "@/components/AchievementsFlipbook";
 import ContactSection from "@/components/ContactSection";
 import ExperienceSection from "@/components/ExperienceSection";
+import ChatAssistant from "@/components/ChatAssistant";
 import Footer from "@/components/Footer";
 import { MotionProvider } from "@/components/MotionProvider";
 import { existsSync } from "node:fs";
@@ -40,6 +41,7 @@ export default function Home() {
         <ContactSection resumeAvailable={resumeAvailable} />
       </main>
       <Footer />
+      <ChatAssistant />
     </MotionProvider>
   );
 }

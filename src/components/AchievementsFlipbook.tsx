@@ -280,6 +280,7 @@ export default function AchievementsFlipbook() {
 
     const onWheel = (e: WheelEvent) => {
       if (e.ctrlKey || document.querySelector("dialog[open]")) return; // pinch-zoom / modal
+      if ((e.target as Element | null)?.closest?.("[data-chat-root]")) return; // scrolling inside the chat panel
       const dy = e.deltaMode === 1 ? e.deltaY * 16 : e.deltaMode === 2 ? e.deltaY * window.innerHeight : e.deltaY;
       if (!dy || Math.abs(dy) < Math.abs(e.deltaX)) return;
       const g = geometry();
@@ -347,7 +348,7 @@ export default function AchievementsFlipbook() {
     const touch = { active: false, startY: 0, fired: false, exiting: false };
     const onTouchStart = (e: TouchEvent) => {
       // touches on the menu / header belong to the menu, never to the book
-      if ((e.target as Element | null)?.closest?.("header")) {
+      if ((e.target as Element | null)?.closest?.("header, [data-chat-root]")) {
         touch.active = false;
         return;
       }

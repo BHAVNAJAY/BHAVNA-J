@@ -284,3 +284,10 @@
     white-space: nowrap;
   }
 }
+
+/* keep the page counter clear of the floating chat button (bottom-right of the screen) */
+@media (min-width: 761px) {
+  .footerRow {
+    bottom: 92px;
+  }
+}

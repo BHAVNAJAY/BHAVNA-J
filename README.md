@@ -42,6 +42,28 @@ The 3D badge is created using Three.js and React Three Fiber, without Spline or 
 - Hobbies: Interests beyond technology
 - Resume & Contact: My professional profile and ways to connect
 
+## AI Portfolio Assistant
+
+A Gemini-powered chat ("Bhavna's AI") answers visitors' questions using only the content already in
+`src/data/` (profile, skills, experience, projects, achievements). It is not RAG yet: the whole portfolio
+is passed as context, behind a single `retrieve()` function that a later RAG version can replace.
+
+Setup:
+
+1. Create a free key at https://aistudio.google.com/apikey
+2. Copy `.env.example` to `.env.local` and set `GEMINI_API_KEY=...` (this file is git-ignored; never commit it).
+3. `npm install` then `npm run dev` and open http://localhost:3000 — the button appears bottom-right.
+
+Notes:
+
+- The API lives in `src/app/api/chat/route.ts` and needs a Node server (local dev, `next start`, or Vercel).
+  GitHub Pages only serves static files, so the Pages build leaves the route out and the chat says it is not connected
+  yet, unless the repository variable `CHAT_API_URL` points at a deployment (for example on Vercel) that hosts it.
+  On that server also set `CHAT_ALLOWED_ORIGINS=https://bhavnajay.github.io`.
+- For rate limiting that holds across serverless instances, set `UPSTASH_REDIS_REST_URL` and
+  `UPSTASH_REDIS_REST_TOKEN`; without them it falls back to per-instance memory.
+- Edit what the assistant knows by editing the data files; edit how it behaves in `src/lib/assistantInstructions.ts`.
+
 ## Connect
 
 I'm always open to meaningful collaborations, new ideas, and opportunities to learn, create, and grow.

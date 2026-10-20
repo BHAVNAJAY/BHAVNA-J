@@ -5,3 +5,8 @@ out
 next-env.d.ts
 .vercel
 .DS_Store
+
+# secrets
+.env
+.env.local
+.env.*.local
