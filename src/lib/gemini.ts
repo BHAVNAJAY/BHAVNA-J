@@ -2,7 +2,7 @@
  * Thin wrapper around the official Google Gen AI SDK (@google/genai). Server-side only.
  * The API key is read from GEMINI_API_KEY and never leaves the server.
  */
-import { ApiError, GoogleGenAI } from "@google/genai";
+import { ApiError, GoogleGenAI, ThinkingLevel } from "@google/genai";
 import type { ChatTurn } from "./chatValidation";
 
 /**
@@ -12,7 +12,7 @@ import type { ChatTurn } from "./chatValidation";
  */
 export const DEFAULT_MODEL = "gemini-3.5-flash-lite";
 const MAX_OUTPUT_TOKENS = 2048; // headroom: thinking models count reasoning tokens against this
-const TIMEOUT_MS = 25_000;
+const TIMEOUT_MS = 40_000;
 
 export class ChatError extends Error {
   constructor(
@@ -44,6 +44,8 @@ export async function generateAnswer(opts: { system: string; history: ChatTurn[]
       config: {
         systemInstruction: opts.system,
         maxOutputTokens: MAX_OUTPUT_TOKENS,
+        // Short factual Q&A over a small knowledge base does not need long reasoning; LOW keeps replies fast.
+        thinkingConfig: { thinkingLevel: ThinkingLevel.LOW },
         abortSignal: AbortSignal.timeout(TIMEOUT_MS),
       },
     });

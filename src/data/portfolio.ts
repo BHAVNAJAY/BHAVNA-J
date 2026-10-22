@@ -174,7 +174,7 @@ export const contact = {
  * (The NEXT_PUBLIC_CHAT_API_URL build variable, if set, takes priority over this.)
  */
 export const chat = {
-  apiUrl: "",
+  apiUrl: "https://bhavna-j.vercel.app/",
 };
 
 export const nav = [

@@ -264,6 +264,8 @@
 }
 
 .chips button {
+  animation: chip-pop 0.45s var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 70ms);
   padding: 8px 12px;
   border-radius: 999px;
   border: 1px solid rgba(240, 190, 214, 0.35);
@@ -368,9 +370,21 @@
   }
 }
 
+@keyframes chip-pop {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .panel,
-  .dots i {
+  .dots i,
+  .chips button {
     animation: none;
   }
 

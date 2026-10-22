@@ -8,11 +8,16 @@ import styles from "@/styles/chat.module.css";
 type Msg = { id: number; role: "user" | "assistant"; text: string; error?: boolean };
 
 const MAX_CHARS = 600;
+// Shown four at a time; ones the visitor has already asked are skipped, so fresh ideas keep coming.
 const SUGGESTIONS = [
   "Tell me about Bhavna's projects",
   "What are her strongest skills?",
   "Explain her AI/ML experience",
   "What makes her different?",
+  "What are her achievements?",
+  "Tell me about her work experience",
+  "Which project best shows her AI skills?",
+  "How can I contact her?",
 ];
 const INTRO =
   "Hi! I'm Bhavna's AI assistant. Ask me about her projects, skills, experience and achievements. I only share what's in her portfolio, and I'll say so when something isn't documented.";
@@ -158,7 +163,9 @@ export default function ChatAssistant() {
     }
   };
 
-  const started = messages.length > 0;
+  // Suggestions pop in at the start and again after every answer (hidden while a reply is loading).
+  const asked = new Set(messages.filter((m) => m.role === "user").map((m) => m.text));
+  const suggestions = busy ? [] : SUGGESTIONS.filter((s) => !asked.has(s)).slice(0, 4);
 
   return (
     <div className={styles.root} data-chat-root>
@@ -201,10 +208,10 @@ export default function ChatAssistant() {
                 </span>
               </div>
             )}
-            {!started && (
-              <div className={styles.chips}>
-                {SUGGESTIONS.map((s) => (
-                  <button key={s} type="button" onClick={() => void send(s)} disabled={busy}>
+            {suggestions.length > 0 && (
+              <div className={styles.chips} key={messages.length} aria-label="Suggested questions">
+                {suggestions.map((s, i) => (
+                  <button key={s} type="button" onClick={() => void send(s)} style={{ ["--i" as string]: i }}>
                     {s}
                   </button>
                 ))}

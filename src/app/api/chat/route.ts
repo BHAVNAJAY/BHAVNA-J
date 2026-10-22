@@ -19,6 +19,7 @@ import { checkRateLimit } from "@/lib/rateLimit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+export const maxDuration = 60; // seconds — lets slow Gemini replies finish on Vercel
 
 /** Browser origins allowed to call this API from another site (the static GitHub Pages build). */
 const ALLOWED_ORIGINS = (process.env.CHAT_ALLOWED_ORIGINS ?? "https://bhavnajay.github.io,http://localhost:3000,http://localhost:3001")
