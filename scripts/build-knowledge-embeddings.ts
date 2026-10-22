@@ -12,7 +12,7 @@
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { EMBED_DIMS, EMBED_MODEL, embedTexts } from "../src/lib/embeddings";
-import { buildChunks, chunkHash, embeddingText } from "../src/lib/portfolioKnowledge";
+import { buildChunks, chunkHash, embeddingText, isPinned } from "../src/lib/portfolioKnowledge";
 
 const root = process.cwd();
 
@@ -32,8 +32,8 @@ if (!process.env.GEMINI_API_KEY) {
 }
 
 async function main() {
-  // the pinned "portfolio map" is always sent as-is, so it needs no embedding
-  const chunks = buildChunks().filter((c) => c.kind !== "map");
+  // pinned chunks (portfolio map, contact) are always sent as-is, so they need no embedding
+  const chunks = buildChunks().filter((c) => !isPinned(c));
   console.log(`Embedding ${chunks.length} chunks with ${EMBED_MODEL} (${EMBED_DIMS} dimensions)…`);
 
   const vectors = await embedTexts(chunks.map(embeddingText), "RETRIEVAL_DOCUMENT");

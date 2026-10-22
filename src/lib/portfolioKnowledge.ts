@@ -7,8 +7,8 @@
  * "About" paragraph, per documented gap.
  *
  * RETRIEVAL (retrieve): the visitor's question is embedded with Gemini, compared by cosine similarity with
- * the pre-computed chunk embeddings in knowledge-embeddings.json, and only the TOP_K best chunks (plus a tiny
- * always-sent "portfolio map" so the model knows what exists) go into the prompt.
+ * the pre-computed chunk embeddings in knowledge-embeddings.json, and only the TOP_K best chunks (plus two tiny
+ * always-sent chunks — the "portfolio map" and the contact details) go into the prompt.
  *
  *   >>> Re-run `npm run build:knowledge` whenever you change the data files, then commit the JSON. <<<
  *
@@ -25,6 +25,13 @@ import { EMBED_DIMS, EMBED_MODEL, cosine, embedTexts } from "./embeddings";
 
 /** How many of the best-matching chunks go into the prompt. Raise for broader answers, lower for tighter ones. */
 export const TOP_K = 5;
+/**
+ * Chunk kinds that are ALWAYS sent, never ranked: the portfolio map (so the model knows what exists) and the
+ * contact details (so "what's her email?" works however it is worded). They skip similarity search entirely.
+ */
+export const PINNED_KINDS: readonly string[] = ["map", "contact"];
+export const isPinned = (d: { kind: string }) => PINNED_KINDS.includes(d.kind);
+
 /** Give up on the embedding call after this long and fall back to the full portfolio. */
 const EMBED_TIMEOUT_MS = 8000;
 
@@ -246,7 +253,7 @@ function queryText(question: string, history: { role: "user" | "assistant"; text
 
 /**
  * Pick the evidence to hand to the model for a question:
- *   the pinned portfolio map  +  the TOP_K most similar chunks  +  any chunk not covered by the embeddings file.
+ *   the pinned chunks (portfolio map + contact)  +  the TOP_K most similar chunks  +  any chunk not covered by the embeddings file.
  * Falls back to the whole portfolio if retrieval cannot run. Never throws.
  */
 export async function retrieveWithInfo(
@@ -262,8 +269,8 @@ export async function retrieveWithInfo(
   const idx = loadIndex();
   if (!idx) return done(all, "fallback");
 
-  const pinned = all.filter((d) => d.kind === "map");
-  const rankable = all.filter((d) => d.kind !== "map");
+  const pinned = all.filter(isPinned);
+  const rankable = all.filter((d) => !isPinned(d));
   const indexed: { doc: KnowledgeDoc; embedding: number[] }[] = [];
   const unindexed: KnowledgeDoc[] = [];
   for (const d of rankable) {
