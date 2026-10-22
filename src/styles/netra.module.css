@@ -1,0 +1,299 @@
+/* ── Netra 3D showcase ─────────────────────────────────────────────────────
+   A tall section (the scroll corridor) holding a sticky full-screen stage. The page scrolls normally;
+   scroll position only drives the model and the captions. Dark, like the Skills section before it. */
+.section {
+  position: relative;
+  background: var(--black);
+  height: 420svh;
+}
+
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+}
+
+/* soft light pool behind the model (lavender + pink, with a hint of the scene's own teal) */
+.glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(48% 52% at 62% 52%, rgba(141, 111, 196, 0.3), transparent 72%),
+    radial-gradient(36% 40% at 40% 70%, rgba(222, 160, 190, 0.18), transparent 70%),
+    radial-gradient(30% 34% at 74% 36%, rgba(96, 190, 190, 0.1), transparent 70%);
+}
+
+/* the canvas never captures clicks or touches, so page scrolling always works */
+.canvasWrap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  touch-action: pan-y;
+  will-change: transform, opacity;
+}
+
+.canvasWrap canvas {
+  display: block;
+  touch-action: pan-y;
+}
+
+/* ── heading (same type as every other section title) ── */
+.headWrap {
+  position: relative;
+  z-index: 3;
+  padding: calc(var(--nav-h) + clamp(8px, 2svh, 22px)) var(--gutter) 0;
+  pointer-events: none;
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+}
+
+.title {
+  margin: 0;
+  color: var(--white);
+}
+
+.subtitle {
+  margin: 0;
+  font-size: clamp(18px, 2vw, 26px);
+  color: var(--lavender);
+}
+
+/* ── captions: one at a time, bottom-left (desktop) ── */
+.captions {
+  position: absolute;
+  z-index: 4;
+  left: clamp(16px, 4vw, 64px);
+  bottom: clamp(48px, 9svh, 96px);
+  width: min(430px, calc(100% - 32px));
+  display: grid;
+}
+
+.cap {
+  grid-area: 1 / 1;
+  align-self: end;
+  padding: clamp(18px, 2vw, 26px);
+  border-radius: 26px;
+  color: var(--white);
+  background: linear-gradient(160deg, rgba(222, 160, 190, 0.1), rgba(222, 160, 190, 0.03) 50%, rgba(222, 160, 190, 0.07));
+  border: 1px solid rgba(246, 205, 224, 0.25);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: inset 0 1px 1px rgba(246, 205, 224, 0.5), 0 26px 50px -22px rgba(0, 0, 0, 0.85);
+}
+
+.cap h3,
+.staticCopy h3 {
+  margin: 0 0 10px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--pink);
+}
+
+.cap p,
+.staticCopy p {
+  margin: 0;
+  font-size: clamp(15px, 1.25vw, 17px);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.cap p + .tags,
+.staticCopy p + .tags {
+  margin-top: 14px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tags li {
+  padding: 5px 11px;
+  border-radius: 999px;
+  border: 1px solid rgba(240, 190, 214, 0.28);
+  background: rgba(222, 160, 190, 0.07);
+  font-size: 13px;
+  color: var(--lavender);
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+
+.links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(240, 190, 214, 0.4);
+  color: var(--white);
+  font-size: 14px;
+  font-weight: 600;
+  transition: border-color 0.3s, color 0.3s, transform 0.35s var(--ease);
+}
+
+.links a:hover,
+.links a:focus-visible {
+  border-color: var(--pink);
+  color: var(--pink);
+  transform: translateY(-2px);
+}
+
+.links a:focus-visible {
+  outline: 2px solid var(--pink);
+  outline-offset: 2px;
+}
+
+/* ── scroll hint ── */
+.progressRow {
+  position: absolute;
+  z-index: 4;
+  left: clamp(16px, 4vw, 64px);
+  bottom: clamp(16px, 3svh, 30px);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  pointer-events: none;
+}
+
+.progressBar {
+  flex: 0 0 120px;
+  height: 1px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.progressBar span {
+  display: block;
+  height: 100%;
+  background: var(--pink);
+  transform-origin: left;
+}
+
+/* ── loading state ── */
+.loading {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: 54%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transform: translate(-50%, -50%);
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  pointer-events: none;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid rgba(240, 190, 214, 0.25);
+  border-top-color: var(--pink);
+  animation: netra-spin 0.9s linear infinite;
+}
+
+@keyframes netra-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── plain version: reduced motion, no WebGL, or the model failed ── */
+.static {
+  position: relative;
+  background: var(--black);
+  padding: clamp(80px, 11vw, 150px) 0;
+}
+
+.staticMedia {
+  position: relative;
+  margin: clamp(24px, 4vw, 48px) auto 0;
+  width: min(100%, 1000px);
+  aspect-ratio: 16 / 10;
+  border-radius: 24px;
+  overflow: hidden;
+  background: radial-gradient(60% 60% at 50% 50%, rgba(141, 111, 196, 0.22), transparent 75%), var(--charcoal);
+  border: 1px solid var(--line);
+}
+
+.staticCanvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.note {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  padding: 12px 18px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
+  background: linear-gradient(180deg, transparent, rgba(9, 9, 16, 0.85));
+}
+
+.staticCopy {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(20px, 3vw, 40px);
+  margin: clamp(28px, 4vw, 48px) auto 0;
+  width: min(100%, 1000px);
+}
+
+/* ── phones ── */
+@media (max-width: 760px) {
+  .section {
+    height: 360svh;
+  }
+
+  /* captions sit along the bottom, leaving room on the right for the chat button */
+  .captions {
+    left: 14px;
+    right: 80px;
+    width: auto;
+    bottom: clamp(44px, 8svh, 70px);
+  }
+
+  .cap {
+    padding: 16px;
+    border-radius: 22px;
+  }
+
+  .progressRow {
+    left: 16px;
+  }
+
+  .staticCopy {
+    grid-template-columns: 1fr;
+  }
+}
