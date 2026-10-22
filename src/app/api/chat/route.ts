@@ -2,7 +2,7 @@
  * POST /api/chat — Bhavna's AI Portfolio Assistant.
  *
  * Pipeline: origin check → size check → JSON parse → validation → rate limit
- *           → retrieve portfolio evidence → Gemini → JSON answer.
+ *           → retrieve the relevant portfolio chunks (RAG) → Gemini → JSON answer.
  *
  * Needs a Node server (e.g. Vercel, `next start`, `next dev`). It cannot run on GitHub Pages, which only
  * serves static files — for that setup deploy this repo to Vercel too and point the static site at it with
@@ -99,7 +99,7 @@ export async function POST(req: Request) {
   }
 
   try {
-    const evidence = retrieve(parsed.message);
+    const evidence = await retrieve(parsed.message, parsed.history);
     const answer = await generateAnswer({
       system: buildSystemPrompt(formatContext(evidence)),
       history: parsed.history,
