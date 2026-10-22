@@ -6,6 +6,8 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { projects, projectsSection, type Project } from "@/data/projects";
 import ProjectCard from "./ProjectCard";
 import CaseStudy from "./CaseStudy";
+import NetraViewer from "./NetraViewer";
+import { netraShowcase } from "@/data/netra";
 import Reveal from "./Reveal";
 import styles from "@/styles/projects.module.css";
 
@@ -26,6 +28,7 @@ export default function ProjectsSection() {
   const [dims, setDims] = useState({ distance: 0, vw: 1, vh: 1, centers: [] as number[] });
   const [open, setOpen] = useState<Project | null>(null);
   const lastTrigger = useRef<HTMLElement | null>(null);
+  const [view3d, setView3d] = useState(false);
 
   // Pinned on every screen size, phones included. The sideways slide is driven directly by the
   // visitor's own scrolling (it never plays on its own), so it stays on even when the phone is in a
@@ -73,6 +76,15 @@ export default function ProjectsSection() {
     setOpen(p);
   }, []);
 
+  const open3D = useCallback((trigger: HTMLElement) => {
+    lastTrigger.current = trigger;
+    setView3d(true);
+  }, []);
+  const close3D = useCallback(() => {
+    setView3d(false);
+    window.setTimeout(() => lastTrigger.current?.focus(), 0);
+  }, []);
+
   const scrollRail = (dir: 1 | -1) => {
     const rail = railRef.current;
     if (!rail) return;
@@ -115,6 +127,7 @@ export default function ProjectsSection() {
                 project={p}
                 index={i}
                 onOpen={openStudy}
+                onView3D={p.slug === netraShowcase.projectSlug ? open3D : undefined}
                 trackX={x}
                 center={dims.centers[i] ?? 0}
                 viewportW={dims.vw}
@@ -133,7 +146,7 @@ export default function ProjectsSection() {
           {header}
           <div ref={railRef} className={styles.rail} role="region" aria-label="Projects carousel — swipe sideways" tabIndex={0}>
             {projects.map((p, i) => (
-              <ProjectCard key={p.slug} project={p} index={i} onOpen={openStudy} />
+              <ProjectCard key={p.slug} project={p} index={i} onOpen={openStudy} onView3D={p.slug === netraShowcase.projectSlug ? open3D : undefined} />
             ))}
           </div>
           <div className={`container ${styles.railControls}`}>
@@ -146,6 +159,8 @@ export default function ProjectsSection() {
           </div>
         </div>
       )}
+
+      <NetraViewer open={view3d} onClose={close3D} />
 
       <CaseStudy
         project={open}

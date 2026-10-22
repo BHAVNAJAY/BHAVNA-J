@@ -1,10 +1,71 @@
-/* ── Netra 3D showcase ─────────────────────────────────────────────────────
-   A tall section (the scroll corridor) holding a sticky full-screen stage. The page scrolls normally;
-   scroll position only drives the model and the captions. Dark, like the Skills section before it. */
-.section {
-  position: relative;
+/* ── Netra 3D viewer (opened from the Netra card in Projects) ───────────────
+   A full-screen overlay with its own scroll area. Scrolling drives the model + captions; dragging turns
+   it. The page behind is frozen while it is open. */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
   background: var(--black);
-  height: 420svh;
+  animation: netra-in 0.35s var(--ease);
+}
+
+@keyframes netra-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* "View projects": always reachable, top-left, above everything */
+.back {
+  position: absolute;
+  z-index: 10;
+  top: calc(14px + env(safe-area-inset-top, 0px));
+  left: clamp(14px, 3vw, 40px);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 18px 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(240, 190, 214, 0.5);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  background: linear-gradient(135deg, rgba(222, 160, 190, 0.3), rgba(141, 111, 196, 0.3));
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 12px 30px -12px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: transform 0.3s var(--ease), border-color 0.3s;
+}
+
+.back:hover {
+  transform: translateX(-2px);
+  border-color: var(--pink);
+}
+
+.back:focus-visible,
+.links a:focus-visible {
+  outline: 2px solid var(--pink);
+  outline-offset: 2px;
+}
+
+.scroller {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+
+.scroller::-webkit-scrollbar {
+  display: none;
+}
+
+.corridor {
+  position: relative;
+  height: 380svh;
 }
 
 .stage {
@@ -40,11 +101,26 @@
   touch-action: pan-y;
 }
 
+/* catches drags: horizontal swipes turn the model, vertical swipes still scroll the viewer */
+.dragLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  touch-action: pan-y;
+  cursor: grab;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.dragLayer:active {
+  cursor: grabbing;
+}
+
 /* ── heading (same type as every other section title) ── */
 .headWrap {
   position: relative;
   z-index: 3;
-  padding: calc(var(--nav-h) + clamp(8px, 2svh, 22px)) var(--gutter) 0;
+  padding: calc(66px + clamp(8px, 2svh, 22px)) var(--gutter) 0;
   pointer-events: none;
 }
 
@@ -227,27 +303,33 @@
 }
 
 /* ── plain version: reduced motion, no WebGL, or the model failed ── */
-.static {
+.plainCorridor {
   position: relative;
-  background: var(--black);
-  padding: clamp(80px, 11vw, 150px) 0;
+  min-height: 100svh;
 }
 
-.staticMedia {
+.plainStage {
   position: relative;
-  margin: clamp(24px, 4vw, 48px) auto 0;
-  width: min(100%, 1000px);
+  padding-bottom: clamp(40px, 8vw, 90px);
+}
+
+.plainStage .canvasWrap {
+  position: relative;
+  inset: auto;
+  height: min(62svh, 560px);
+  margin: clamp(16px, 3vw, 32px) auto 0;
+  width: min(100% - 2 * var(--gutter), 1000px);
+}
+
+.fallbackMedia {
+  position: relative;
+  margin: clamp(16px, 3vw, 32px) auto 0;
+  width: min(100% - 2 * var(--gutter), 1000px);
   aspect-ratio: 16 / 10;
   border-radius: 24px;
   overflow: hidden;
-  background: radial-gradient(60% 60% at 50% 50%, rgba(141, 111, 196, 0.22), transparent 75%), var(--charcoal);
   border: 1px solid var(--line);
-}
-
-.staticCanvas {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
+  background: var(--charcoal);
 }
 
 .note {
@@ -266,14 +348,28 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(20px, 3vw, 40px);
-  margin: clamp(28px, 4vw, 48px) auto 0;
-  width: min(100%, 1000px);
+  margin: clamp(24px, 4vw, 44px) auto 0;
+  width: min(100% - 2 * var(--gutter), 1000px);
+}
+
+.hint {
+  transition: opacity 0.5s;
+}
+
+.hint[data-gone] {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay {
+    animation: none;
+  }
 }
 
 /* ── phones ── */
 @media (max-width: 760px) {
-  .section {
-    height: 360svh;
+  .corridor {
+    height: 340svh;
   }
 
   /* captions sit along the bottom, leaving room on the right for the chat button */

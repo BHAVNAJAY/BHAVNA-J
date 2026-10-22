@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Box } from "lucide-react";
 import { motion, useMotionValue, useTransform, type MotionValue } from "motion/react";
 import type { Project } from "@/data/projects";
 import { withBase } from "@/lib/base";
@@ -50,13 +50,15 @@ type Props = {
   project: Project;
   index: number;
   onOpen: (p: Project, trigger: HTMLElement) => void;
+  /** When set, the card shows a "View 3D model" button that calls this. */
+  onView3D?: (trigger: HTMLElement) => void;
   /** Desktop gallery: horizontal track position + this card's resting centre, for depth scaling. */
   trackX?: MotionValue<number>;
   center?: number;
   viewportW?: number;
 };
 
-export default function ProjectCard({ project, index, onOpen, trackX, center = 0, viewportW = 1 }: Props) {
+export default function ProjectCard({ project, index, onOpen, onView3D, trackX, center = 0, viewportW = 1 }: Props) {
   // distance of the card's centre from the viewport centre → subtle depth
   const fallback = useMotionValue(0);
   const x = trackX ?? fallback;
@@ -121,6 +123,11 @@ export default function ProjectCard({ project, index, onOpen, trackX, center = 0
           </div>
         </div>
       </button>
+      {onView3D && (
+        <button type="button" className={styles.view3d} onClick={(e) => onView3D(e.currentTarget)} aria-label={`View the ${project.title} 3D model`}>
+          <Box size={16} aria-hidden /> View 3D model
+        </button>
+      )}
     </motion.article>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { Component, Suspense, useEffect, useMemo, useRef, type ReactNode } from "react";
+import { Component, Suspense, useEffect, useMemo, useRef, type MutableRefObject, type ReactNode } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
@@ -80,15 +80,17 @@ type SceneProps = {
   travel: MotionValue<number>;
   /** Hold one fixed pose (prefers-reduced-motion). */
   reduced: boolean;
+  /** Visitor's own turn / tilt / zoom (drag + pinch), added on top of the scroll-driven pose. */
+  manual?: MutableRefObject<{ yaw: number; pitch: number; zoom: number }>;
   onReady: () => void;
 };
 
-function NetraModel({ url, enter, travel, reduced, onReady }: SceneProps) {
+function NetraModel({ url, enter, travel, reduced, manual, onReady }: SceneProps) {
   const { scene } = useGLTF(url, false, false);
   const group = useRef<THREE.Group>(null);
   const camera = useThree((s) => s.camera) as THREE.PerspectiveCamera;
   const size = useThree((s) => s.size);
-  const state = useRef({ e: 0, t: reduced ? 0.45 : 0, ready: false });
+  const state = useRef({ e: 0, t: reduced ? 0.45 : 0, ready: false, yaw: 0, pitch: 0, zoom: 1 });
 
   const model = useMemo(() => {
     const merged = mergeByMaterial(scene);
@@ -114,6 +116,10 @@ function NetraModel({ url, enter, travel, reduced, onReady }: SceneProps) {
     // damped, so quick flicks and touch scrolling never make the model jump
     s.e = THREE.MathUtils.damp(s.e, targetE, 6, dt);
     s.t = THREE.MathUtils.damp(s.t, targetT, 5, dt);
+    const m = manual?.current;
+    s.yaw = THREE.MathUtils.damp(s.yaw, m?.yaw ?? 0, 8, dt);
+    s.pitch = THREE.MathUtils.damp(s.pitch, m?.pitch ?? 0, 8, dt);
+    s.zoom = THREE.MathUtils.damp(s.zoom, m?.zoom ?? 1, 8, dt);
 
     // Camera framing that adapts to the screen: fit the model's bounding sphere into the visible area.
     const dist = 14;
@@ -128,9 +134,9 @@ function NetraModel({ url, enter, travel, reduced, onReady }: SceneProps) {
     const exit = seg(s.t, 0.94, 1);
 
     const scale = fit * lerp(0.74, 1, enterEase) * lerp(1, 1.2, travelEase) * lerp(1, 0.95, exit);
-    g.scale.setScalar(scale);
+    g.scale.setScalar(scale * s.zoom);
     // a slow orbit that keeps the whole interior readable, starting from a high 3/4 view and settling lower
-    g.rotation.set(lerp(0.78, 0.4, travelEase), lerp(-0.95, 0.75, travelEase) + (1 - enterEase) * -0.5, 0);
+    g.rotation.set(lerp(0.78, 0.4, travelEase) + s.pitch, lerp(-0.95, 0.75, travelEase) + (1 - enterEase) * -0.5 + s.yaw, 0);
     // the plain (reduced-motion) layout shows the model alone in its own box: keep it centred there
     g.position.set(
       reduced ? 0 : (wide ? visW * 0.12 : 0) + lerp(-0.2, 0.25, travelEase),

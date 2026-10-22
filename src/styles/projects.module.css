@@ -146,6 +146,7 @@
 
 /* ── card ───────────────────────────────────────── */
 .card {
+  position: relative;
   flex: 0 0 auto;
   width: clamp(300px, 46vw, 760px);
   transform-origin: center;
@@ -550,4 +551,40 @@
   .progressRow {
     margin-top: 14px;
   }
+}
+
+
+/* "View 3D model" — a small glass pill on the card (only on projects that have a 3D model) */
+.view3d {
+  position: absolute;
+  z-index: 3;
+  top: 14px;
+  right: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 16px 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(240, 190, 214, 0.55);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  background: linear-gradient(135deg, rgba(222, 160, 190, 0.34), rgba(141, 111, 196, 0.34));
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 26px -10px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: transform 0.35s var(--ease), border-color 0.3s;
+}
+
+.view3d:hover {
+  transform: translateY(-2px);
+  border-color: var(--pink);
+}
+
+.view3d:focus-visible {
+  outline: 2px solid var(--pink);
+  outline-offset: 2px;
 }
