@@ -167,6 +167,16 @@ export const contact = {
   footer: "Designed & built by Bhavna J.",
 };
 
+/**
+ * AI assistant connection. GitHub Pages can only serve static files, so the Gemini call has to run on a
+ * server. Deploy this repo to Vercel (with GEMINI_API_KEY set there) and paste its public address here,
+ * e.g. "https://your-project.vercel.app" — then push. This is just a URL, not a secret.
+ * (The NEXT_PUBLIC_CHAT_API_URL build variable, if set, takes priority over this.)
+ */
+export const chat = {
+  apiUrl: "",
+};
+
 export const nav = [
   { label: "Home", href: "#home" },
   { label: "About", href: "#about" },
