@@ -1,75 +1,104 @@
 # Bhavna J — Personal Portfolio
 
-A creative portfolio showcasing my journey across Design, Development, Artificial Intelligence, and Digital Marketing.
+A personal portfolio exploring the intersection of development, artificial intelligence, and design.
 
-I'm Bhavna Jayakumar, a Computer Science Engineering student specializing in AI & Machine Learning. I enjoy transforming ideas into meaningful digital experiences by combining technical problem-solving with thoughtful design and creativity.
+I'm Bhavna Jayakumar, a Computer Science Engineering student specialising in AI & Machine Learning. I enjoy building useful applications, experimenting with AI-powered solutions, and creating digital experiences that bring functionality and visual design together.
 
 ## About the Portfolio
 
-This portfolio brings together my technical projects, creative work, skills, achievements, and professional journey in one interactive experience.
+This portfolio is a reflection of my work, interests, and growth across software development, AI/ML, and creative design. It brings my projects, skills, experience, and achievements together in an interactive website designed to feel as personal as the work it showcases.
 
-The website features a cinematic 3D hanging ID badge, interactive project showcases, an animated achievements flipbook, and dedicated sections highlighting my background, skills, interests, and contact information.
+From custom 3D interactions to scroll-based animations and an interactive achievements flipbook, my personal assistant, each section combines thoughtful design with hands-on development.
 
 ## Tech Stack
 
 - Framework: Next.js (App Router)
 - Frontend: React 19, TypeScript
 - 3D Graphics: Three.js, React Three Fiber, Drei
-- Animations: Motion for React
+- Animation: Motion for React
 - Interactive Flipbook: react-pageflip
 - Icons: Lucide
-- Styling: CSS Modules and custom CSS
+- Styling: CSS Modules, custom CSS
 
-## Highlights
+## Key Features
 
-- Interactive 3D ID badge built entirely with code
-- Custom acrylic badge geometry, metal clip, and animated ribbon lanyard
-- Front-and-back badge rotation with interactive controls
-- Smooth animations and scroll-based transitions
-- Interactive project gallery with dedicated case studies
-- Page-turning achievements flipbook
-- Responsive layouts with accessibility and reduced-motion support
-- WebGL fallback for devices that cannot render the 3D scene
+- Interactive 3D ID Badge: A custom-built hanging badge with an acrylic-style body, metal clip, ribbon lanyard, and front-and-back interaction.
+- Scroll-Based Animations: Motion and transitions that bring the portfolio experience to life.
+- Project Showcase: A dedicated space for exploring my technical projects, creative work, and implementations.
+- Achievements Flipbook: An animated, page-turning presentation of milestones and accomplishments.
+- Responsive Design: Layouts designed to work across different screen sizes, with reduced-motion support and a fallback for devices that cannot render the 3D scene.
 
-The 3D badge is created using Three.js and React Three Fiber, without Spline or paid 3D services.
 
-## Explore
+## What's Inside
 
-- About Me: My background, interests, and professional journey
-- Skills: My capabilities across design, development, AI/ML, and digital marketing
-- Projects: Selected technical and creative projects
-- Achievements: Milestones and accomplishments presented through an interactive flipbook
-- Hobbies: Interests beyond technology
-- Resume & Contact: My professional profile and ways to connect
+- About: My background, interests, and professional journey.
+- Skills: My toolkit across development, AI/ML, design, and visual communication.
+- Projects: Selected technical and creative work.
+- Experience & Achievements: My professional journey and key milestones.
+- Resume & Contact: Information for connecting and exploring collaboration opportunities.
 
 ## AI Portfolio Assistant
 
-A Gemini-powered chat ("Bhavna's AI") answers visitors' questions using only the content already in
-`src/data/` (profile, skills, experience, projects, achievements). It is not RAG yet: the whole portfolio
-is passed as context, behind a single `retrieve()` function that a later RAG version can replace.
+The portfolio includes **Bhavna's AI**, a Gemini-powered assistant that helps visitors learn more about my background, skills, projects, experience, and achievements.
 
-Setup:
+It uses structured portfolio data as its knowledge source, with instructions designed to keep responses grounded in the information provided rather than inventing personal details.
 
-1. Create a free key at https://aistudio.google.com/apikey
-2. Copy `.env.example` to `.env.local` and set `GEMINI_API_KEY=...` (this file is git-ignored; never commit it).
-3. `npm install` then `npm run dev` and open http://localhost:3000 — the button appears bottom-right.
+### How It Works
 
-Notes:
+The chat interface sends questions to a Next.js API route, which applies the assistant's instructions and supplies relevant portfolio information to Gemini. The API key stays on the server rather than being exposed in the frontend.
 
-- The API lives in `src/app/api/chat/route.ts` and needs a Node server (local dev, `next start`, or Vercel).
-  GitHub Pages only serves static files, so the Pages build leaves the route out and the chat says it is not connected
-  yet, unless the repository variable `CHAT_API_URL` points at a deployment (for example on Vercel) that hosts it.
-  On that server also set `CHAT_ALLOWED_ORIGINS=https://bhavnajay.github.io`.
-- For rate limiting that holds across serverless instances, set `UPSTASH_REDIS_REST_URL` and
-  `UPSTASH_REDIS_REST_TOKEN`; without them it falls back to per-instance memory.
-- Edit what the assistant knows by editing the data files; edit how it behaves in `src/lib/assistantInstructions.ts`.
+The current implementation uses portfolio context provided through a `retrieve()` function. It can be extended with a retrieval-augmented generation (RAG) pipeline as the knowledge base grows.
+
+### Run Locally
+
+1. Install dependencies
+
+```bash
+npm install
+```
+
+2. Configure environment variables
+
+Create a `.env.local` file based on `.env.example` and add your Gemini API key:
+
+```env
+GEMINI_API_KEY=your_gemini_api_key
+```
+
+Get a key from [Google AI Studio](https://aistudio.google.com/apikey). Keep `.env.local` private and never commit API keys to version control.
+
+3. Start the development server
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### Assistant Configuration
+
+- API route: `src/app/api/chat/route.ts`
+- Assistant instructions: `src/lib/assistantInstructions.ts`
+- Knowledge source: Portfolio data files in `src/data/`
+
+Update the portfolio data files to change the information available to the assistant, and edit the instruction file to adjust its behaviour.
+
+### Deployment Notes
+
+The chat API requires a server-side runtime, such as local Next.js development, `next start`, or a suitable Vercel deployment. Static hosting alone cannot execute the API route.
+
+If deploying the frontend to GitHub Pages, configure `CHAT_API_URL` to point to a separately deployed chat API and configure `CHAT_ALLOWED_ORIGINS` on that server to allow the deployed frontend's origin.
+
+For rate limiting shared across serverless instances, configure `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`. Without these, the implementation falls back to per-instance in-memory rate limiting.
 
 ## Connect
 
-I'm always open to meaningful collaborations, new ideas, and opportunities to learn, create, and grow.
+I'm always interested in exploring new ideas, learning from others, and collaborating on projects that bring technology and creativity together.
 
-Logic runs from A to Z. Creativity knows no limits.
+- Portfolio: [bhavna-j.vercel.app](https://bhavna-j.vercel.app/)
+- Email: [bhavnajayakumar@gmail.com](mailto:bhavnajayakumar@gmail.com)
+- Behance: [My design work](https://www.behance.net/bhavnaj10-h8)
 
+--------------------------------------------------------------------
 
-
-Designed and built by Bhavna J.
+Designed and built by Bhavna Jayakumar.
