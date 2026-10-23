@@ -67,14 +67,17 @@
 
 .track {
   position: relative;
-  display: flex;
-  gap: clamp(20px, 2.2vw, 36px);
-  padding: 12px max(var(--gutter), calc((100vw - var(--max)) / 2 + var(--gutter)));
-  width: max-content;
-  will-change: transform;
-  transform-style: preserve-3d; /* lets each card rotate in 3D inside the sticky stage's perspective */
-  /* cards sink back in 3D, which puts this empty strip IN FRONT of them for hit-testing — so let clicks pass through it */
+  display: grid;
+  place-items: center; /* every card is stacked in the same centre cell, then moved onto the arc by its transform */
+  width: 100%;
+  padding: 12px 0;
+  transform-style: preserve-3d; /* cards keep their own 3D positions inside the sticky stage's perspective */
+  /* cards sit at different depths, which puts this empty box in front of some of them for hit-testing — let clicks through */
   pointer-events: none;
+}
+
+.track > * {
+  grid-area: 1 / 1;
 }
 
 .progressRow {
@@ -154,10 +157,11 @@
 .card {
   position: relative;
   flex: 0 0 auto;
-  width: clamp(300px, 46vw, 760px);
+  width: var(--card-w, clamp(300px, 46vw, 760px));
   transform-origin: center;
   backface-visibility: hidden;
   pointer-events: auto;
+  will-change: transform;
 }
 
 .section:not([data-pinned]) .card {
@@ -534,7 +538,7 @@
 /* ── phones & small tablets: the pinned reel with tall poster cards ───────── */
 @media (max-width: 899px) {
   .card {
-    width: min(78vw, 400px);
+    width: var(--card-w, min(78vw, 400px));
   }
 
   .media {

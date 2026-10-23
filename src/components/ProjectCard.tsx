@@ -3,9 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { ArrowUpRight, Box } from "lucide-react";
-import { motion, useMotionValue, useReducedMotion, useTransform, type MotionValue } from "motion/react";
+import { motion, useMotionValue, useTransform, type MotionValue } from "motion/react";
 import type { Project } from "@/data/projects";
 import { withBase } from "@/lib/base";
+import { cardPose, type ArcGeometry } from "@/lib/arcGallery";
 import styles from "@/styles/projects.module.css";
 
 /** Typographic cover used until a real screenshot is added for the project. */
@@ -46,49 +47,29 @@ export function ProjectCover({ project, index }: { project: Project; index: numb
   );
 }
 
-/**
- * CURVED GALLERY — tune the feel here.
- * Cards lean away from the centre of the screen like panels on a curved strip, and sink back a little.
- *   MAX_TILT  : degrees a card leans when it is a full screen-width from the centre (desktop / phone)
- *   MAX_DEPTH : pixels a card sinks back at that distance
- *   BOW       : +1 = outer edges lean AWAY from you (cards wrap round, like standing inside a drum)
- *               -1 = outer edges lean TOWARD you (a bowl facing you)
- */
-const MAX_TILT = { desktop: 38, phone: 24 };
-const MAX_DEPTH = { desktop: 220, phone: 120 };
-const BOW = -1;
-
 type Props = {
   project: Project;
   index: number;
   onOpen: (p: Project, trigger: HTMLElement) => void;
   /** When set, the card shows a "View 3D model" button that calls this. */
   onView3D?: (trigger: HTMLElement) => void;
-  /** Desktop gallery: horizontal track position + this card's resting centre, for depth scaling. */
-  trackX?: MotionValue<number>;
-  center?: number;
-  viewportW?: number;
+  /**
+   * Curved gallery: the shared arc, this card's slot, and the scroll-driven position of the whole gallery.
+   * Omit for a plain card (e.g. the swipe carousel).
+   */
+  gallery?: { geometry: ArcGeometry; position: MotionValue<number>; curved: boolean };
 };
 
-export default function ProjectCard({ project, index, onOpen, onView3D, trackX, center = 0, viewportW = 1 }: Props) {
-  // distance of the card's centre from the viewport centre → subtle depth
-  const fallback = useMotionValue(0);
-  const x = trackX ?? fallback;
-  const dist = useTransform(x, (v) => Math.min(1, Math.abs(center + v - viewportW / 2) / viewportW));
-  const scale = useTransform(dist, (d) => (trackX ? 1 - d * 0.08 : 1));
-  const opacity = useTransform(dist, (d) => (trackX ? 1 - d * 0.45 : 1));
-
-  // signed distance from the screen centre: negative = left of centre, positive = right (in screen widths)
-  const reduced = !!useReducedMotion();
-  const phone = viewportW < 900;
-  const curve = !!trackX && !reduced;
-  const signed = useTransform(x, (v) => (center + v - viewportW / 2) / viewportW);
-  const ease = (d: number) => {
-    const e = Math.min(1, Math.abs(d) * 1.5); // fully curved by 2/3 of a screen away from the centre
-    return e * (2 - e); // ease-out: bends quickly near the centre, then settles
-  };
-  const rotateY = useTransform(signed, (d) => (curve ? Math.sign(d) * BOW * ease(d) * (phone ? MAX_TILT.phone : MAX_TILT.desktop) : 0));
-  const z = useTransform(signed, (d) => (curve ? -ease(d) * (phone ? MAX_DEPTH.phone : MAX_DEPTH.desktop) : 0));
+export default function ProjectCard({ project, index, onOpen, onView3D, gallery }: Props) {
+  // Every card is placed on the same arc: its position, depth and turn all come from ONE angle (see lib/arcGallery.ts).
+  const idle = useMotionValue(0); // cards outside the gallery (swipe carousel) have no position to follow
+  const position = gallery?.position ?? idle;
+  const pose = (pos: number) => (gallery ? cardPose(gallery.geometry, index, pos, gallery.curved) : null);
+  const x = useTransform(position, (p) => pose(p)?.x ?? 0);
+  const z = useTransform(position, (p) => pose(p)?.z ?? 0);
+  const rotateY = useTransform(position, (p) => pose(p)?.rotateY ?? 0);
+  const opacity = useTransform(position, (p) => pose(p)?.opacity ?? 1);
+  const pointerEvents = useTransform(position, (p) => (pose(p)?.visible === false ? "none" : "auto"));
 
   // touch: first tap reveals the info (blurred backdrop), second tap opens the project
   const ref = useRef<HTMLElement>(null);
@@ -115,7 +96,7 @@ export default function ProjectCard({ project, index, onOpen, onView3D, trackX, 
   };
 
   return (
-    <motion.article ref={ref} className={styles.card} style={{ scale, opacity, rotateY, z }} data-active={active || undefined}>
+    <motion.article ref={ref} className={styles.card} style={gallery ? { x, z, rotateY, opacity, pointerEvents } : undefined} data-active={active || undefined}>
       <button
         type="button"
         className={styles.cardButton}
