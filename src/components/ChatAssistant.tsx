@@ -244,7 +244,6 @@ export default function ChatAssistant() {
               <ArrowUp size={18} strokeWidth={2.2} />
             </button>
           </form>
-          <p className={styles.note}>AI can make mistakes. Answers come only from Bhavna&rsquo;s portfolio.</p>
         </section>
       )}
 

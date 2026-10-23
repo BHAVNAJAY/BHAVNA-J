@@ -294,7 +294,7 @@
   display: flex;
   align-items: flex-end;
   gap: 8px;
-  padding: 10px 12px 6px;
+  padding: 10px 12px 14px;
 }
 
 .form textarea {
@@ -342,14 +342,6 @@
 .send:disabled {
   opacity: 0.4;
   cursor: default;
-}
-
-.note {
-  margin: 0;
-  padding: 0 16px 12px;
-  font-size: 11px;
-  color: var(--muted-2);
-  text-align: center;
 }
 
 /* ── phones ── */
