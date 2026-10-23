@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { ArrowUpRight, Box } from "lucide-react";
-import { motion, useMotionValue, useTransform, type MotionValue } from "motion/react";
+import { motion, useMotionValue, useReducedMotion, useTransform, type MotionValue } from "motion/react";
 import type { Project } from "@/data/projects";
 import { withBase } from "@/lib/base";
 import styles from "@/styles/projects.module.css";
@@ -46,6 +46,18 @@ export function ProjectCover({ project, index }: { project: Project; index: numb
   );
 }
 
+/**
+ * CURVED GALLERY — tune the feel here.
+ * Cards lean away from the centre of the screen like panels on a curved strip, and sink back a little.
+ *   MAX_TILT  : degrees a card leans when it is a full screen-width from the centre (desktop / phone)
+ *   MAX_DEPTH : pixels a card sinks back at that distance
+ *   BOW       : +1 = outer edges lean AWAY from you (cards wrap round, like standing inside a drum)
+ *               -1 = outer edges lean TOWARD you (a bowl facing you)
+ */
+const MAX_TILT = { desktop: 38, phone: 24 };
+const MAX_DEPTH = { desktop: 220, phone: 120 };
+const BOW = -1;
+
 type Props = {
   project: Project;
   index: number;
@@ -65,6 +77,18 @@ export default function ProjectCard({ project, index, onOpen, onView3D, trackX, 
   const dist = useTransform(x, (v) => Math.min(1, Math.abs(center + v - viewportW / 2) / viewportW));
   const scale = useTransform(dist, (d) => (trackX ? 1 - d * 0.08 : 1));
   const opacity = useTransform(dist, (d) => (trackX ? 1 - d * 0.45 : 1));
+
+  // signed distance from the screen centre: negative = left of centre, positive = right (in screen widths)
+  const reduced = !!useReducedMotion();
+  const phone = viewportW < 900;
+  const curve = !!trackX && !reduced;
+  const signed = useTransform(x, (v) => (center + v - viewportW / 2) / viewportW);
+  const ease = (d: number) => {
+    const e = Math.min(1, Math.abs(d) * 1.5); // fully curved by 2/3 of a screen away from the centre
+    return e * (2 - e); // ease-out: bends quickly near the centre, then settles
+  };
+  const rotateY = useTransform(signed, (d) => (curve ? Math.sign(d) * BOW * ease(d) * (phone ? MAX_TILT.phone : MAX_TILT.desktop) : 0));
+  const z = useTransform(signed, (d) => (curve ? -ease(d) * (phone ? MAX_DEPTH.phone : MAX_DEPTH.desktop) : 0));
 
   // touch: first tap reveals the info (blurred backdrop), second tap opens the project
   const ref = useRef<HTMLElement>(null);
@@ -91,7 +115,7 @@ export default function ProjectCard({ project, index, onOpen, onView3D, trackX, 
   };
 
   return (
-    <motion.article ref={ref} className={styles.card} style={{ scale, opacity }} data-active={active || undefined}>
+    <motion.article ref={ref} className={styles.card} style={{ scale, opacity, rotateY, z }} data-active={active || undefined}>
       <button
         type="button"
         className={styles.cardButton}

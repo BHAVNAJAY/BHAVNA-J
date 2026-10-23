@@ -60,6 +60,9 @@
   flex-direction: column;
   justify-content: center;
   padding-top: var(--nav-h);
+  /* real perspective for the curved gallery: the cards tilt in 3D relative to the middle of the screen */
+  perspective: 1500px;
+  perspective-origin: 50% 50%;
 }
 
 .track {
@@ -69,6 +72,9 @@
   padding: 12px max(var(--gutter), calc((100vw - var(--max)) / 2 + var(--gutter)));
   width: max-content;
   will-change: transform;
+  transform-style: preserve-3d; /* lets each card rotate in 3D inside the sticky stage's perspective */
+  /* cards sink back in 3D, which puts this empty strip IN FRONT of them for hit-testing — so let clicks pass through it */
+  pointer-events: none;
 }
 
 .progressRow {
@@ -150,6 +156,8 @@
   flex: 0 0 auto;
   width: clamp(300px, 46vw, 760px);
   transform-origin: center;
+  backface-visibility: hidden;
+  pointer-events: auto;
 }
 
 .section:not([data-pinned]) .card {
