@@ -69,6 +69,7 @@ export default function ProjectCard({ project, index, onOpen, onView3D, gallery 
   const z = useTransform(position, (p) => pose(p)?.z ?? 0);
   const rotateY = useTransform(position, (p) => pose(p)?.rotateY ?? 0);
   const opacity = useTransform(position, (p) => pose(p)?.opacity ?? 1);
+  const scale = useTransform(position, (p) => pose(p)?.scale ?? 1);
   const pointerEvents = useTransform(position, (p) => (pose(p)?.visible === false ? "none" : "auto"));
 
   // touch: first tap reveals the info (blurred backdrop), second tap opens the project
@@ -96,7 +97,7 @@ export default function ProjectCard({ project, index, onOpen, onView3D, gallery 
   };
 
   return (
-    <motion.article ref={ref} className={styles.card} style={gallery ? { x, z, rotateY, opacity, pointerEvents } : undefined} data-active={active || undefined}>
+    <motion.article ref={ref} className={styles.card} style={gallery ? { x, z, rotateY, scale, opacity, pointerEvents } : undefined} data-active={active || undefined}>
       <button
         type="button"
         className={styles.cardButton}

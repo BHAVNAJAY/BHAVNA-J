@@ -13,6 +13,13 @@
  */
 export const CURVE = 1;
 
+/**
+ * Zoom "pop": a card is POP_FAR times its size when it is a full card-slot away from the centre and
+ * POP_CENTRE times its size when it is exactly in the middle, easing smoothly in between as you scroll.
+ */
+export const POP_FAR = 0.92;
+export const POP_CENTRE = 1.1;
+
 export type ArcGeometry = {
   /** card width in px */
   width: number;
@@ -41,15 +48,17 @@ const smooth = (t: number) => t * t * (3 - 2 * t);
 export function cardPose(g: ArcGeometry, index: number, position: number, curved: boolean) {
   const delta = index - position;
   if (!curved) {
-    return { x: delta * (g.width + g.gap), z: 0, rotateY: 0, opacity: 1, visible: Math.abs(delta) < 3 };
+    return { x: delta * (g.width + g.gap), z: 0, rotateY: 0, scale: 1, opacity: 1, visible: Math.abs(delta) < 3 };
   }
   const phi = delta * g.step;
   const deg = (phi * 180) / Math.PI;
   const away = Math.abs(deg);
+  const near = 1 - smooth(Math.min(1, Math.abs(delta))); // 1 when centred → 0 one slot away
   return {
     x: g.radius * Math.sin(phi),
     z: -CURVE * g.radius * (1 - Math.cos(phi)),
     rotateY: CURVE * deg,
+    scale: POP_FAR + (POP_CENTRE - POP_FAR) * near,
     // panels that have turned nearly edge-on fade out instead of showing a sliver
     opacity: 1 - smooth(Math.min(1, Math.max(0, (away - 62) / 30))),
     visible: away < 84,
