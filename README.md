@@ -1,4 +1,4 @@
-# Bhavna J — Personal Portfolio
+# Bhavna J - Personal Portfolio
 
 A personal portfolio exploring the intersection of development, artificial intelligence, and design.
 
@@ -6,9 +6,9 @@ I'm Bhavna Jayakumar, a Computer Science Engineering student specialising in AI 
 
 ## About the Portfolio
 
-This portfolio is a reflection of my work, interests, and growth across software development, AI/ML, and creative design. It brings my projects, skills, experience, and achievements together in an interactive website designed to feel as personal as the work it showcases.
+This portfolio brings together my projects, skills, achievements, creative work, and professional journey in one interactive experience.
 
-From custom 3D interactions to scroll-based animations and an interactive achievements flipbook, my personal assistant, each section combines thoughtful design with hands-on development.
+From a custom-built 3D hanging ID badge and scroll-based animations to an interactive achievements flipbook and a personal AI assistant, each feature reflects my interest in combining thoughtful design with hands-on development.
 
 ## Tech Stack
 
@@ -18,16 +18,20 @@ From custom 3D interactions to scroll-based animations and an interactive achiev
 - Animation: Motion for React
 - Interactive Flipbook: react-pageflip
 - Icons: Lucide
-- Styling: CSS Modules, custom CSS
+- Styling: CSS Modules and custom CSS
+- AI Integration: Gemini API
+- Retrieval: Embeddings, cosine similarity, semantic search, and Retrieval-Augmented Generation (RAG)
 
 ## Key Features
 
-- Interactive 3D ID Badge: A custom-built hanging badge with an acrylic-style body, metal clip, ribbon lanyard, and front-and-back interaction.
-- Scroll-Based Animations: Motion and transitions that bring the portfolio experience to life.
-- Project Showcase: A dedicated space for exploring my technical projects, creative work, and implementations.
-- Achievements Flipbook: An animated, page-turning presentation of milestones and accomplishments.
-- Responsive Design: Layouts designed to work across different screen sizes, with reduced-motion support and a fallback for devices that cannot render the 3D scene.
+- Interactive 3D ID badge with a custom acrylic-style body, metal clip, animated ribbon lanyard, and front-and-back interaction.
+- Scroll-based animations and interactive transitions throughout the portfolio.
+- Project gallery showcasing my technical projects and creative work.
+- Animated achievements flipbook with page-turning interactions.
+- Responsive layouts with reduced-motion support and a fallback for devices that cannot render the 3D scene.
+- Personal AI assistant that answers questions about my background, skills, projects, experience, and achievements using a curated portfolio knowledge base.
 
+The 3D badge is built directly in code using Three.js and React Three Fiber, without Spline or paid 3D services.
 
 ## What's Inside
 
@@ -37,59 +41,87 @@ From custom 3D interactions to scroll-based animations and an interactive achiev
 - Experience & Achievements: My professional journey and key milestones.
 - Resume & Contact: Information for connecting and exploring collaboration opportunities.
 
-## AI Portfolio Assistant
+## AI Portfolio Assistant — Bhavna's AI
 
-The portfolio includes **Bhavna's AI**, a Gemini-powered assistant that helps visitors learn more about my background, skills, projects, experience, and achievements.
+Bhavna's AI is a Gemini-powered assistant designed to help visitors explore my portfolio through natural-language questions. Instead of relying on a fixed set of questions and answers, it retrieves relevant information from my portfolio before generating a response.
 
-It uses structured portfolio data as its knowledge source, with instructions designed to keep responses grounded in the information provided rather than inventing personal details.
+### How the RAG Pipeline Works
 
-### How It Works
+The assistant uses Retrieval-Augmented Generation (RAG) to find relevant portfolio information before sending context to Gemini.
 
-The chat interface sends questions to a Next.js API route, which applies the assistant's instructions and supplies relevant portfolio information to Gemini. The API key stays on the server rather than being exposed in the frontend.
+1. Knowledge preparation: The `npm run build:knowledge` command splits portfolio data into 34 focused chunks covering areas such as skills, projects, roles, and achievements. These chunks are generated from the existing data files to avoid maintaining a separate copy of the portfolio content.
 
-The current implementation uses portfolio context provided through a `retrieve()` function. It can be extended with a retrieval-augmented generation (RAG) pipeline as the knowledge base grows.
+2. Embedding generation: Gemini converts each chunk into a 768-dimensional embedding that represents its semantic meaning. The embeddings are saved in `knowledge-embeddings.json`.
+
+3. Question embedding: When a visitor asks a question, the server generates an embedding for that question using the same embedding approach.
+
+4. Semantic retrieval: The system compares the question embedding against the stored chunk embeddings using cosine similarity and selects the five most relevant chunks. This allows the assistant to retrieve information based on meaning rather than relying only on exact keyword matches.
+
+5. Pinned context: Two additional chunks are always included: a portfolio map summarising the available information and a contact-details chunk.
+
+6. Answer generation: Gemini receives the assistant instructions, retrieved context, and visitor's question. This keeps the prompt focused on the most relevant information instead of sending the entire portfolio every time.
+
+7. Grounded responses: The assistant is instructed to answer using the supplied portfolio information. When the requested details are not documented, it should acknowledge the limitation instead of inventing personal facts. Questions about tools or technologies outside my established expertise are handled with wording that distinguishes current knowledge from areas I'm still learning.
+
+8. Fallback handling: If semantic retrieval cannot run, the system falls back to supplying the full portfolio context, helping the assistant remain usable when retrieval is unavailable.
+
+The retrieval process uses cosine similarity over stored embeddings, without requiring a separate vector database. The selected context is approximately 3–4 KB in typical cases, compared with around 14 KB for the full portfolio context.
 
 ### Run Locally
 
-1. Install dependencies
+1. Install dependencies.
 
 ```bash
 npm install
 ```
 
-2. Configure environment variables
+2. Configure environment variables.
 
-Create a `.env.local` file based on `.env.example` and add your Gemini API key:
+Create a `.env.local` file based on `.env.example` and add your Gemini API key.
 
 ```env
 GEMINI_API_KEY=your_gemini_api_key
 ```
 
-Get a key from [Google AI Studio](https://aistudio.google.com/apikey). Keep `.env.local` private and never commit API keys to version control.
+Get an API key from [Google AI Studio](https://aistudio.google.com/apikey).
 
-3. Start the development server
+Keep `.env.local` private and never commit API keys to version control.
+
+3. Build the knowledge embeddings.
+
+```bash
+npm run build:knowledge
+```
+
+This prepares the portfolio chunks and generates `knowledge-embeddings.json`. Ensure the generated knowledge file is available to the application in the expected location.
+
+4. Start the development server.
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open [http://localhost:3000](http://localhost:3000) in your browser and use the AI assistant.
 
 ### Assistant Configuration
 
 - API route: `src/app/api/chat/route.ts`
 - Assistant instructions: `src/lib/assistantInstructions.ts`
-- Knowledge source: Portfolio data files in `src/data/`
+- Portfolio knowledge source: Data files in `src/data/`
+- Knowledge preparation: `npm run build:knowledge`
+- Generated embeddings: `knowledge-embeddings.json`
 
-Update the portfolio data files to change the information available to the assistant, and edit the instruction file to adjust its behaviour.
+Update the original portfolio data files when your skills, projects, or experience change, then rebuild the knowledge embeddings so the assistant can retrieve the updated information.
 
 ### Deployment Notes
 
 The chat API requires a server-side runtime, such as local Next.js development, `next start`, or a suitable Vercel deployment. Static hosting alone cannot execute the API route.
 
-If deploying the frontend to GitHub Pages, configure `CHAT_API_URL` to point to a separately deployed chat API and configure `CHAT_ALLOWED_ORIGINS` on that server to allow the deployed frontend's origin.
+If the frontend is deployed on GitHub Pages, configure `CHAT_API_URL` to point to a separately deployed chat API. Set `CHAT_ALLOWED_ORIGINS` on the API server to allow the deployed frontend's origin.
 
-For rate limiting shared across serverless instances, configure `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`. Without these, the implementation falls back to per-instance in-memory rate limiting.
+For shared rate limiting across serverless instances, configure `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`. Without these variables, the implementation falls back to per-instance in-memory rate limiting.
+
+Keep the Gemini API key on the server and never expose it in client-side code.
 
 ## Connect
 
@@ -97,8 +129,8 @@ I'm always interested in exploring new ideas, learning from others, and collabor
 
 - Portfolio: [bhavna-j.vercel.app](https://bhavna-j.vercel.app/)
 - Email: [bhavnajayakumar@gmail.com](mailto:bhavnajayakumar@gmail.com)
-- Behance: [My design work](https://www.behance.net/bhavnaj10-h8)
+- Behance: [My design work](https://www.behance.net/bhavna-jayakumar)
 
---------------------------------------------------------------------
+----------------------------------------------------------
 
 Designed and built by Bhavna Jayakumar.
