@@ -14,17 +14,23 @@ export function ProjectCover({ project, index }: { project: Project; index: numb
   if (project.thumbnail) {
     // On phones the card is a tall poster: the full landscape artwork sits in the middle (nothing cropped)
     // over a blurred copy of itself that fills the rest. On desktop the artwork simply covers the card.
+    // A project with its own portrait phone image shows just that on phones (no blurred fill); the landscape pair
+    // below is then desktop-only.
+    const phoneOnly = !!project.thumbnailMobile;
     return (
       <>
-        <Image src={withBase(project.thumbnail)} alt="" aria-hidden fill sizes="40vw" className={styles.thumbBg} loading="lazy" />
+        <Image src={withBase(project.thumbnail)} alt="" aria-hidden fill sizes="40vw" className={`${styles.thumbBg} ${phoneOnly ? styles.desktopOnly : ""}`} loading="lazy" />
         <Image
           src={withBase(project.thumbnail)}
           alt={`${project.title} cover`}
           fill
           sizes="(max-width: 900px) 85vw, 50vw"
-          className={styles.thumbFg}
+          className={`${styles.thumbFg} ${phoneOnly ? styles.desktopOnly : ""}`}
           loading="lazy"
         />
+        {project.thumbnailMobile && (
+          <Image src={withBase(project.thumbnailMobile)} alt={`${project.title} cover`} fill sizes="(max-width: 900px) 85vw, 400px" className={styles.thumbPhone} loading="lazy" />
+        )}
       </>
     );
   }

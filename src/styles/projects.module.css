@@ -206,6 +206,13 @@
   object-fit: cover;
 }
 
+/* portrait phone-only backdrop: hidden everywhere except phones */
+.thumbPhone {
+  display: none;
+  object-fit: cover;
+  object-position: 50% 40%; /* keep the satellite and the subject in view when a 2:3 image is cropped to a 4:5 card */
+}
+
 .thumbBg {
   display: none;
   object-fit: cover;
@@ -537,6 +544,14 @@
 
 /* ── phones & small tablets: the pinned reel with tall poster cards ───────── */
 @media (max-width: 899px) {
+  .desktopOnly {
+    display: none !important;
+  }
+
+  .thumbPhone {
+    display: block;
+  }
+
   .card {
     width: var(--card-w, min(78vw, 400px));
   }

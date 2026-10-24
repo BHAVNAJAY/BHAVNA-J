@@ -18,6 +18,8 @@ export type Project = {
   /** 0–360, tints the generated cover when no thumbnail is set. */
   hue: number;
   thumbnail?: string;
+  /** Optional portrait (4:5 is ideal) backdrop used on phones only, instead of the landscape one + blurred fill. */
+  thumbnailMobile?: string;
   role?: string;
   stack?: string[];
   demoUrl?: string;
@@ -44,6 +46,7 @@ export const projects: Project[] = [
       "A Vision-Language system for an ISRO problem statement that integrates Gemini API, Meta SAM 2, and fine-tuned AI models to analyze multi-sensor satellite imagery and support remote-sensing queries.",
     hue: 200,
     thumbnail: "/projects/project-01.png",
+    thumbnailMobile: "/projects/project-01-mobile.jpg",
     role: "Generative AI Satellite Query & Analysis Platform",
     stack: ["Python", "PyTorch", "LLMs", "Agentic AI", "RAG", "Embeddings", "Computer Vision", "REST APIs", "EfficientNet-B4", "ResNet-50"],
     repoUrl: "https://github.com/BHAVNAJAY/SatQueryAI",
