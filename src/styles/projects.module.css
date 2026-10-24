@@ -615,3 +615,44 @@
   outline: 2px solid var(--pink);
   outline-offset: 2px;
 }
+
+/* ── phones: make the tapped info fit inside the (shorter) poster card ── */
+@media (max-width: 899px) {
+  .meta {
+    padding: 16px 16px 16px;
+  }
+
+  .category {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+  }
+
+  .cardTitle {
+    margin-top: 6px;
+    font-size: 24px;
+  }
+
+  .more p {
+    margin-top: 8px;
+    font-size: 13px;
+    line-height: 1.42;
+  }
+
+  .more > div > :not(:first-child) {
+    margin-top: 8px;
+  }
+
+  .tags {
+    gap: 4px;
+  }
+
+  .tags li {
+    font-size: 11px;
+    padding: 3px 8px;
+    line-height: 1.25;
+  }
+
+  .open {
+    font-size: 12px;
+  }
+}
