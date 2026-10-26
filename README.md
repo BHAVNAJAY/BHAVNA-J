@@ -131,5 +131,3 @@ I'm always interested in exploring new ideas, learning from others, and collabor
 - Behance: [My design work](https://www.behance.net/bhavna-jayakumar)
 
 ----------------------------------------------------------
-
-Designed and built by Bhavna Jayakumar.
