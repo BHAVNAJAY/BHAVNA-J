@@ -31,7 +31,6 @@ From a custom-built 3D hanging ID badge and scroll-based animations to an intera
 - Responsive layouts with reduced-motion support and a fallback for devices that cannot render the 3D scene.
 - Personal AI assistant that answers questions about my background, skills, projects, experience, and achievements using a curated portfolio knowledge base.
 
-The 3D badge is built directly in code using Three.js and React Three Fiber, without Spline or paid 3D services.
 
 ## What's Inside
 
